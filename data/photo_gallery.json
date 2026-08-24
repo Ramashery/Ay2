@@ -1,0 +1,796 @@
+[
+  {
+    "slug": "landscapes",
+    "label_i18n": "photo.cat.landscapes",
+    "photos": [
+      {
+        "title": {
+          "i18n": "photo.t.islaEnUyuni",
+          "default": "Isla en Uyuni"
+        },
+        "location": {
+          "i18n": "photo.l.uyuniBolivia",
+          "default": "Uyuni, Bolivia"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Isla en Uyuni.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.lagunaAzul",
+          "default": "Laguna Azul"
+        },
+        "location": {
+          "i18n": "photo.l.atacamaChile",
+          "default": "Atacama, Chile"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Laguna Azul Chile.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.lagunaBlanca",
+          "default": "Laguna Blanca"
+        },
+        "location": {
+          "i18n": "photo.l.bolivianAndes",
+          "default": "Bolivian Andes"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Laguna Blanca Andes Bolivianos.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.rumboAUyuni",
+          "default": "Rumbo a Uyuni"
+        },
+        "location": {
+          "i18n": "photo.l.bolivianAltiplano",
+          "default": "Bolivian Altiplano"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Rumbo Uyuni.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.cajonDelMaipo",
+          "default": "Cajón del Maipo"
+        },
+        "location": {
+          "i18n": "photo.l.cajonDelMaipoChile",
+          "default": "Cajón del Maipo, Chile"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Cajon del Maipo.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.daliDesert",
+          "default": "Dalí Desert"
+        },
+        "location": {
+          "i18n": "photo.l.surLipezBolivia",
+          "default": "Sur Lípez, Bolivia"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Dali Desert.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.andeanFlamingos",
+          "default": "Andean Flamingos"
+        },
+        "location": {
+          "i18n": "photo.l.bolivianAndes",
+          "default": "Bolivian Andes"
+        },
+        "camera": "Canon EOS Rebel T1i",
+        "lens": "EF-S 18-55mm f/3.5-5.6 IS",
+        "year": "2016",
+        "image": "images/photo/Andean Flamingo.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.kotorLandscape",
+          "default": "Kotor Landscape"
+        },
+        "location": {
+          "i18n": "photo.l.kotorMontenegro",
+          "default": "Kotor, Montenegro"
+        },
+        "camera": "S. Galaxy S23 Ultra",
+        "lens": "S23 Ultra Ultrawide",
+        "year": "2024",
+        "image": "images/photo/Kotor landscape.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.petraHorizon",
+          "default": "Petra Horizon"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Petra horizon.webp"
+      }
+    ]
+  },
+  {
+    "slug": "street",
+    "label_i18n": "photo.cat.street",
+    "photos": [
+      {
+        "title": {
+          "i18n": "photo.t.streetsOfDubrovnik",
+          "default": "Dubrovnik Streets"
+        },
+        "location": {
+          "i18n": "photo.l.dubrovnikCroatia",
+          "default": "Dubrovnik, Croatia"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Streets of Dubrovnik.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.wanderingFox",
+          "default": "Wandering Fox"
+        },
+        "location": {
+          "i18n": "photo.l.bragaPortugal",
+          "default": "Braga, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Wandering Fox Street photo.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.asturianFolklore",
+          "default": "Asturian Folklore"
+        },
+        "location": {
+          "i18n": "photo.l.asturiasSpain",
+          "default": "Asturias, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2023",
+        "image": "images/photo/Asturian Folklore street photo.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.doingTheLaundry",
+          "default": "Doing the Laundry"
+        },
+        "location": {
+          "i18n": "photo.l.portoPortugal",
+          "default": "Porto, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2023",
+        "image": "images/photo/Making the Laundry.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.streetsOfSevilla",
+          "default": "Sevilla Streets"
+        },
+        "location": {
+          "i18n": "photo.l.sevilleSpain",
+          "default": "Seville, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2023",
+        "image": "images/photo/Streets of Sevilla.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.ponteDeLima",
+          "default": "Ponte de Lima"
+        },
+        "location": {
+          "i18n": "photo.l.ponteDeLimaPortugal",
+          "default": "Ponte de Lima, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2023",
+        "image": "images/photo/Ponte de Lima.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.peopleOfSevilla",
+          "default": "People of Sevilla"
+        },
+        "location": {
+          "i18n": "photo.l.sevilleSpain",
+          "default": "Seville, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2023",
+        "image": "images/photo/Sevilla 2.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.ojoSevillano",
+          "default": "Ojo Sevillano"
+        },
+        "location": {
+          "i18n": "photo.l.sevilleSpain",
+          "default": "Seville, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2022",
+        "image": "images/photo/Ojo Sevillano.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.streetBeautyNantes",
+          "default": "Beauty, Nantes"
+        },
+        "location": {
+          "i18n": "photo.l.nantesFrance",
+          "default": "Nantes, France"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2021",
+        "image": "images/photo/Street Beauty Nantes.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.streetsOfBiarritz",
+          "default": "Biarritz"
+        },
+        "location": {
+          "i18n": "photo.l.biarritzFrance",
+          "default": "Biarritz, France"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2021",
+        "image": "images/photo/Streets of Biarritz.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.streetsOfIstanbul",
+          "default": "Istanbul Streets"
+        },
+        "location": {
+          "i18n": "photo.l.istanbulTurkey",
+          "default": "Istanbul, Turkey"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Streets of Istanbul.webp"
+      }
+    ]
+  },
+  {
+    "slug": "animals",
+    "label_i18n": "photo.cat.animals",
+    "photos": [
+      {
+        "title": {
+          "i18n": "photo.t.dog",
+          "default": "Dog"
+        },
+        "location": {
+          "i18n": "photo.l.cotaCundinamarca",
+          "default": "Cota, Cundinamarca"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2021",
+        "image": "images/photo/Dog.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.shenanigan",
+          "default": "Shenanigan"
+        },
+        "location": {
+          "i18n": "photo.l.laMesaCundinamarca",
+          "default": "La Mesa, Cundinamarca"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "Carl Zeiss Biotar",
+        "year": "2023",
+        "image": "images/photo/Shenanigan.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.fairyWoods",
+          "default": "Fairy Woods"
+        },
+        "location": {
+          "i18n": "photo.l.doninhosFerrolSpain",
+          "default": "Doniños, Ferrol, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "Carl Zeiss Biotar",
+        "year": "2022",
+        "image": "images/photo/Fairy woods.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.comingForYou",
+          "default": "Coming for You"
+        },
+        "location": {
+          "i18n": "photo.l.bosniaHerz",
+          "default": "Bosnia & Herzegovina"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Coming for you.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.crash",
+          "default": "Crash"
+        },
+        "location": {
+          "i18n": "photo.l.bosniaHerz",
+          "default": "Bosnia & Herzegovina"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Crash.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.attackOfTheTitan",
+          "default": "Attack of Titan"
+        },
+        "location": {
+          "i18n": "photo.l.doninhosFerrolSpain",
+          "default": "Doniños, Ferrol, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2023",
+        "image": "images/photo/Attack of the Titan.webp"
+      }
+    ]
+  },
+  {
+    "slug": "travel",
+    "label_i18n": "photo.cat.travel",
+    "photos": [
+      {
+        "title": {
+          "i18n": "photo.t.ourLadyOfTheRocks",
+          "default": "Lady of the Rocks"
+        },
+        "location": {
+          "i18n": "photo.l.perastMontenegro",
+          "default": "Perast, Montenegro"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Our Lady of the Rocks.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.perast",
+          "default": "Perast"
+        },
+        "location": {
+          "i18n": "photo.l.perastMontenegro",
+          "default": "Perast, Montenegro"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Perast.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.twelveHouses",
+          "default": "12 Houses"
+        },
+        "location": {
+          "i18n": "photo.l.veniceItaly",
+          "default": "Venice, Italy"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/12 Houses.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.adrvanRestaurant",
+          "default": "Adrvan"
+        },
+        "location": {
+          "i18n": "photo.l.mostarBosniaHerz",
+          "default": "Mostar, Bosnia & Herzegovina"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Adrvan Restaurant Mostar.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.dubrovnik",
+          "default": "Dubrovnik"
+        },
+        "location": {
+          "i18n": "photo.l.dubrovnikCroatia",
+          "default": "Dubrovnik, Croatia"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Dubrovnik.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.kotorMontenegro",
+          "default": "Kotor Montenegro"
+        },
+        "location": {
+          "i18n": "photo.l.kotorMontenegro",
+          "default": "Kotor, Montenegro"
+        },
+        "camera": "S. Galaxy S23 Ultra",
+        "lens": "S23 Ultra Telephoto",
+        "year": "2024",
+        "image": "images/photo/Kotor Montenegro.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.rovinjCroatia",
+          "default": "Rovinj Croatia"
+        },
+        "location": {
+          "i18n": "photo.l.rovinjCroatia",
+          "default": "Rovinj, Croatia"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Rovinj Croatia.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.touristSelfie",
+          "default": "Tourist Selfie"
+        },
+        "location": {
+          "i18n": "photo.l.mostarBosniaHerz",
+          "default": "Mostar, Bosnia & Herzegovina"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Tourist Selfie.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.paradaRefrescante",
+          "default": "Parada refrescante"
+        },
+        "location": {
+          "i18n": "photo.l.galiciaSpain",
+          "default": "Galicia, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Parada refrescante.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.londonBridge",
+          "default": "London Bridge"
+        },
+        "location": {
+          "i18n": "photo.l.londonUK",
+          "default": "London, UK"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/London Bridge.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.findTheRhombus",
+          "default": "Find the Rhombus"
+        },
+        "location": {
+          "i18n": "photo.l.londonUK",
+          "default": "London, UK"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Find the Rhombus.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.medieval",
+          "default": "Medieval"
+        },
+        "location": {
+          "i18n": "photo.l.bosniaHerz",
+          "default": "Bosnia & Herzegovina"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2024",
+        "image": "images/photo/Medieval.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.atTheTop",
+          "default": "At the Top"
+        },
+        "location": {
+          "i18n": "photo.l.portoPortugal",
+          "default": "Porto, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "2023",
+        "image": "images/photo/On the top.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.sevilla",
+          "default": "Sevilla"
+        },
+        "location": {
+          "i18n": "photo.l.sevilleSpain",
+          "default": "Seville, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2023",
+        "image": "images/photo/Sevilla.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.theRiver",
+          "default": "The River"
+        },
+        "location": {
+          "i18n": "photo.l.sevilleSpain",
+          "default": "Seville, Spain"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2023",
+        "image": "images/photo/The River.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.lookingAtTheSky",
+          "default": "Looking to Sky"
+        },
+        "location": {
+          "i18n": "photo.l.cappadociaTurkey",
+          "default": "Cappadocia, Turkey"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Looking to the Sky.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.indi",
+          "default": "Indi"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "S. Galaxy S23 Ultra",
+        "lens": "S23 Ultra Wide",
+        "year": "2026",
+        "image": "images/photo/Indi.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.beduinos",
+          "default": "Beduinos"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Beduinos.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.cappadociaIceCream",
+          "default": "Ice Cream Houses"
+        },
+        "location": {
+          "i18n": "photo.l.cappadociaTurkey",
+          "default": "Cappadocia, Turkey"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Cappadocia ice cream houses.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.castilloDeLasHadas",
+          "default": "Castillo de las Hadas"
+        },
+        "location": {
+          "i18n": "photo.l.palacioPortugal",
+          "default": "Palácio da Pena, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2022",
+        "image": "images/photo/Castillo de las Hadas.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.goreme",
+          "default": "Göreme"
+        },
+        "location": {
+          "i18n": "photo.l.goremeTurkey",
+          "default": "Göreme, Turkey"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Goreme.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.istanbulShips",
+          "default": "Istanbul Ships"
+        },
+        "location": {
+          "i18n": "photo.l.istanbulTurkey",
+          "default": "Istanbul, Turkey"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Istanbul ships.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.jewelsOfPetra",
+          "default": "Jewels of Petra"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "S. Galaxy S23 Ultra",
+        "lens": "S23 Ultra Wide",
+        "year": "2026",
+        "image": "images/photo/Jewels of Petra.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.montSaintMichel",
+          "default": "Mont Saint-Michel"
+        },
+        "location": {
+          "i18n": "photo.l.normandyFrance",
+          "default": "Normandy, France"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2021",
+        "image": "images/photo/Mt Saint Michel.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.oldTombs",
+          "default": "Old Tombs"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Old tombs.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.petraDetails",
+          "default": "Petra Details"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Petra details.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.petra",
+          "default": "Petra"
+        },
+        "location": {
+          "i18n": "photo.l.petraJordan",
+          "default": "Petra, Jordan"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 21mm f/1.4",
+        "year": "2026",
+        "image": "images/photo/Petra.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.sweetWine",
+          "default": "Sweet Wine"
+        },
+        "location": {
+          "i18n": "photo.l.portoPortugal",
+          "default": "Porto, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 70-300mm f/4-5.6",
+        "year": "—",
+        "image": "images/photo/Sweet wine.webp"
+      },
+      {
+        "title": {
+          "i18n": "photo.t.tritonDeSintra",
+          "default": "Tritón de Sintra"
+        },
+        "location": {
+          "i18n": "photo.l.sintraPortugal",
+          "default": "Sintra, Portugal"
+        },
+        "camera": "Fujifilm X-T4",
+        "lens": "XF 18-55mm f/2.8-4",
+        "year": "2022",
+        "image": "images/photo/Triton de Sintra.webp"
+      }
+    ]
+  }
+]

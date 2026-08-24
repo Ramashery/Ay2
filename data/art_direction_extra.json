@@ -1,0 +1,15 @@
+{
+  "AD_PM_DESC_PLACEHOLDER": "Short description of the brief, the concept and the craft behind this project — mockup copy for now. References like <a href=\"#\" target=\"_blank\" rel=\"noopener noreferrer\">linked words</a> and <a href=\"#\" target=\"_blank\" rel=\"noopener noreferrer\">related work</a> sit inline within the paragraph.",
+  "DISCIPLINE_BACKDROPS": {
+    "identity": "images/sergio-ayala-identity-projects-backdrop-art-direction.webp",
+    "web": "images/sergio-ayala-web-projects-backdrop-art-direction.webp",
+    "editorial": "images/sergio-ayala-editorial-projects-backdrop-art-direction.webp",
+    "3d": "images/sergio-ayala-3d-projects-backdrop-art-direction.webp"
+  },
+  "DISCIPLINE_LABELS": {
+    "identity": "Identity",
+    "web": "Web",
+    "editorial": "Editorial",
+    "3d": "3D & Motion"
+  }
+}
