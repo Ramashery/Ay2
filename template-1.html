@@ -1,0 +1,1644 @@
+<!doctype html>
+<html lang="{{ default_lang | default('en') }}">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- ═══ FONTS ══════════════════════════════════════════════════════════ -->
+  <!-- Funnel Display is self-hosted (fonts/ + @font-face in css/main.css) —
+         no third-party connections on the critical path. Preload the latin
+         subset (covers EN + ES text) so it races the CSS. -->
+  <link rel="preload" href="fonts/funnel-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- ═══ FAVICON ═════════════════════════════════════════════════════════ -->
+  <!-- Static fallback (Safari/iOS, no-JS); animated-favicon.js takes over elsewhere -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23001219'/%3E%3Ctext%20x='32'%20y='34'%20font-family='sans-serif'%20font-weight='800'%20font-size='30'%20fill='%23EE9B00'%20text-anchor='middle'%20dominant-baseline='central'%3E%5B%C2%B7_%C2%B7%5D%3C/text%3E%3C/svg%3E">
+  <!-- ═══ SECURITY HEADERS (HTML-deliverable subset) ══════════════════════ -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' blob: https://cloudflareinsights.com; worker-src 'self' blob:; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <!-- Cloudflare Turnstile (contact-form anti-spam). Explicit render — the
+         widget is drawn by js/contact.js once this async script fires the
+         onloadTurnstileCallback it exposes. Harmless if it fails to load
+         (the form degrades to the email-fallback path). -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback&amp;render=explicit" async defer></script>
+  <!-- ═══ PRIMARY SEO ══════════════════════════════════════════════════════ -->
+  <title>{{ site.title | default('Nikolay | Senior Art Director, Photographer &amp; UX/UI Designer') | safe }}</title>
+  <meta name="description" content="{{ site.description | default('Senior Art Director, Photographer and UX/UI Designer based in Bogotá, Colombia. Freelance services worldwide — brand identity, web design, UX/UI, photography, and illustration.') }}">
+  <meta name="author" content="{{ site.author | default('Nikolay') }}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ site.base_url | default('https://www.nik-greb.com') }}/">
+  <!-- No hreflang: the ES/EN switch is client-side on a single URL, and
+         hreflang requires one distinct URL per language. Bilinguality is
+         declared via og:locale:alternate + JSON-LD inLanguage instead. -->
+  <!-- ═══ OPEN GRAPH (social sharing previews) ═════════════════════════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.base_url | default('https://www.nik-greb.com') }}/">
+  <meta property="og:title" content="{{ site.title | default('Nikolay | Senior Art Director, Photographer &amp; UX/UI Designer') | safe }}">
+  <meta property="og:description" content="{{ site.og_description | default('Senior Art Director, Photographer and UX/UI Designer based in Bogotá, Colombia. Available for freelance projects worldwide.') }}">
+  <!-- Share card — 1200×630 cyber hero (images/og-image.jpg) -->
+  <meta property="og:image" content="{{ site.base_url | default('https://www.nik-greb.com') }}{{ site.og_image | default('/images/og-image.jpg') }}">
+  <meta property="og:image:secure_url" content="{{ site.base_url | default('https://www.nik-greb.com') }}{{ site.og_image | default('/images/og-image.jpg') }}">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nikolay | Creative Design — Open To Work. Cyber-styled hero of the portfolio of Nikolay, Senior Art Director, Photographer &amp; UX/UI Designer.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="es_CO">
+  <meta property="og:site_name" content="Nikolay — Creative Portfolio">
+  <!-- ═══ TWITTER / X CARD ═════════════════════════════════════════════════ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ site.title | default('Nikolay | Senior Art Director, Photographer &amp; UX/UI Designer') | safe }}">
+  <meta name="twitter:description" content="{{ site.og_description | default('Senior Art Director, Photographer and UX/UI Designer based in Bogotá, Colombia. Available for freelance projects worldwide.') }}">
+  <meta name="twitter:image" content="{{ site.base_url | default('https://www.nik-greb.com') }}{{ site.og_image | default('/images/og-image.jpg') }}">
+  <meta name="twitter:image:alt" content="Nikolay | Creative Design — Open To Work.">
+  <meta name="twitter:creator" content="">
+  <!-- ═══ STRUCTURED DATA — JSON-LD ════════════════════════════════════════ -->
+  <!-- Person + ProfessionalService + WebSite entities for Google & AI search -->
+  -
+    </script>
+  <!-- ═══ STRUCTURED DATA — PHOTOGRAPHY GALLERY (56 travel photos) ═══════════
+         Travel photos load via JS/canvas, so they are otherwise uncrawlable.
+         This ImageGallery + Photograph nodes expose them to Google Images & AI. -->
+ 
+  <link rel="stylesheet" href="styles.css{{ '?v=' ~ styles_css_v if styles_css_v }}">
+  <!-- Fault screen critical CSS — inlined so the "page failed to load" fallback
+         (#site-fault, revealed by js/fault-guard.js) still renders even if
+         main.css itself failed to load. Self-contained: no external deps. -->
+ </head>
+ <body>
+  <a href="#main" class="skip-link">Skip to main content</a> <!-- Global fault fallback. Armed FIRST (before preloader) so its error
+         handlers catch boot failures from the deferred bundles. Revealed only
+         when the app fails to boot; dormant once running. See js/fault-guard.js. -->
+  <script>
+    window.WORKS_DATA = {{ works_data_json | safe }};
+    window.AD_PM_DESC_PLACEHOLDER = {{ ad_pm_desc_placeholder_json | safe }};
+    window.DISCIPLINE_BACKDROPS = {{ discipline_backdrops_json | safe }};
+    window.DISCIPLINE_LABELS = {{ discipline_labels_json | safe }};
+  </script>
+  <script defer src="main.js{{ '?v=' ~ main_js_v if main_js_v }}"></script>
+  <div id="site-fault" hidden role="alertdialog" aria-label="Loading error">
+   <div class="sf-wrap">
+    <div class="sf-hole" aria-hidden="true">
+     <span class="sf-disk"></span> <span class="sf-disk sf-disk-b"></span> <span class="sf-core"></span>
+    </div>
+    <div>
+     <div class="sf-msg">
+      <span class="sf-en">THE FILE WAS EATEN BY A BLACK HOLE</span><span class="sf-es-txt">UN AGUJERO NEGRO SE COMIÓ EL ARCHIVO</span>
+     </div>
+     <div class="sf-code">
+      <span class="sf-en">· SIGNAL LOST · SYSTEM DOWN ·</span><span class="sf-es-txt">· SEÑAL PERDIDA · SISTEMA CAÍDO ·</span>
+     </div>
+    </div>
+    <div class="sf-robot-row">
+     <svg class="sf-robot" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <line x1="24" y1="178" x2="276" y2="178" stroke="rgba(238,155,0,.35)" stroke-width="1.5" stroke-dasharray="4 6" /> <rect x="104" y="158" width="10" height="20" rx="2" fill="#04222b" stroke="#EE9B00" stroke-width="2.5" /> <rect x="126" y="158" width="10" height="20" rx="2" fill="#04222b" stroke="#EE9B00" stroke-width="2.5" /> <rect x="99" y="175" width="20" height="6" rx="2" fill="#EE9B00" /> <rect x="121" y="175" width="20" height="6" rx="2" fill="#EE9B00" /> <rect x="92" y="112" width="56" height="50" rx="9" fill="#04222b" stroke="#EE9B00" stroke-width="3" /> <rect x="101" y="123" width="38" height="16" rx="3" fill="#001219" stroke="rgba(238,155,0,.5)" stroke-width="1.5" /> <circle cx="111" cy="131" r="2.3" fill="#00d5df" /> <circle cx="120" cy="131" r="2.3" fill="#EE9B00" /> <circle cx="129" cy="131" r="2.3" fill="#d62839" /> <rect x="108" y="148" width="24" height="5" rx="2.5" fill="rgba(238,155,0,.3)" /> <rect x="112" y="104" width="16" height="10" fill="#04222b" stroke="#EE9B00" stroke-width="2" /> <rect x="96" y="74" width="48" height="34" rx="8" fill="#04222b" stroke="#EE9B00" stroke-width="3" /> <rect x="103" y="82" width="34" height="14" rx="5" fill="#001219" stroke="rgba(238,155,0,.5)" stroke-width="1.5" /> <circle cx="114" cy="89" r="3.3" fill="#EE9B00" /> <circle cx="126" cy="89" r="3.3" fill="#EE9B00" /> <line x1="120" y1="74" x2="120" y2="63" stroke="#EE9B00" stroke-width="2.5" /> <circle cx="120" cy="60" r="3.5" fill="#00d5df" />
+      <g class="sf-rock-hit">
+       <path d="M196 176 L192 158 L206 150 L222 156 L236 164 L233 176 Z" fill="#04222b" stroke="#EE9B00" stroke-width="2.5" stroke-linejoin="round" /> <path d="M206 150 L214 163 L222 156" stroke="rgba(238,155,0,.5)" stroke-width="1.5" /> <path d="M214 163 L213 176" stroke="rgba(238,155,0,.5)" stroke-width="1.5" />
+      </g>
+      <g class="sf-arm">
+       <line x1="146" y1="120" x2="182" y2="140" stroke="#EE9B00" stroke-width="7" stroke-linecap="round" /> <circle cx="184" cy="141" r="5" fill="#04222b" stroke="#EE9B00" stroke-width="2.5" /> <line x1="181" y1="139" x2="212" y2="151" stroke="#a06a34" stroke-width="4" stroke-linecap="round" /> <path d="M200 137 Q213 149 211 160 Q224 150 226 139" fill="none" stroke="#cfd6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+      <g class="sf-spark" stroke="#EE9B00" stroke-width="2" stroke-linecap="round">
+       <line x1="211" y1="150" x2="217" y2="141" /> <line x1="211" y1="150" x2="222" y2="150" /> <line x1="211" y1="150" x2="217" y2="159" /> <line x1="211" y1="150" x2="203" y2="143" />
+      </g>
+     </svg>
+     <div class="sf-work">
+      <span class="sf-en">A robot is working to fix the error<span class="sf-dots"></span></span><span class="sf-es-txt">Un robot está trabajando para arreglar el error<span class="sf-dots"></span></span>
+     </div>
+    </div>
+    <button type="button" class="sf-retry"><span class="sf-en">Retry</span><span class="sf-es-txt">Reintentar</span></button>
+   </div>
+  </div>
+  <header>
+   <nav aria-label="Main navigation">
+    <a href="#intro" class="logo glitch-text" data-i18n="name" data-splitting aria-label="Nikolay">· Nikolay ·</a>
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="main-nav" aria-haspopup="true"><span class="hamburger-line"></span> <span class="hamburger-line"></span> <span class="hamburger-line"></span></button>
+    <div class="main-nav" id="main-nav" role="dialog" aria-label="Main navigation menu" aria-modal="true">
+     <a href="#about" class="nav-btn glitch-text" data-splitting data-i18n-split="nav.about">[ · a b o u t · ]</a> <a href="#art-direction" class="nav-btn glitch-text" data-splitting data-i18n-split="nav.art-direction">[ · a r t · d i r e c t i o n · ]</a> <a href="#photo" class="nav-btn glitch-text" data-splitting data-i18n-split="nav.photography">[ · p h o t o g r a p h y · ]</a> <a href="#illustration" class="nav-btn glitch-text" data-splitting data-i18n-split="nav.illustration">[ · i l l u s t r a t i o n · ]</a> <a href="#contact" class="nav-btn glitch-text" data-splitting data-i18n-split="nav.contact">[ · c o n t a c t · ]</a> <!-- Vertical electric-static line on the drawer's left edge (mobile
+                     only). Last child so the .nav-btn:nth-child stagger stays 1–5.
+                     Driven by MobileNav (show on open / hide on close). -->
+     <canvas class="nav-static-line" aria-hidden="true"></canvas>
+    </div>
+    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+    <div class="language-toggle">
+     <button class="nav-btn glitch-text lang-btn active" data-splitting data-lang="en" aria-pressed="true">[EN]</button>
+     <button class="nav-btn glitch-text lang-btn" data-splitting data-lang="es" aria-pressed="false">[ES]</button>
+     <button id="sound-toggle" class="nav-btn sound-btn active" aria-label="Toggle sound" aria-pressed="true">
+      <svg class="sound-icon" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+       <path class="speaker-body" d="M2 8 h4 l5 -3 v12 l-5 -3 H2 Z" /> <path class="wave wave-1" d="M13 8 a4 4 0 0 1 0 6" /> <path class="wave wave-2" d="M15.5 5.5 a7 7 0 0 1 0 11" /> <line class="mute-slash" x1="2" y1="2" x2="20" y2="20" />
+      </svg>
+     </button>
+    </div>
+   </nav>
+  </header>
+  <main id="main">
+   <section id="intro" aria-label="Introduction">
+    <!-- aria-label gives crawlers the clean text; data-splitting handles the visual spaced effect -->
+    <h1 id="main-title" class="glitch-text reveal--0" data-splitting aria-label="Nikolay | Creative Design">· Nikolay| C r e a t i v e D e s i g n ·</h1>
+    <a href="#contact" class="intro-otw-link" aria-label="Open to work — get in touch"> 
+     <h2 class="glitch-text subtitle-glitch" data-splitting data-i18n-split="intro.otw" aria-label="Open To Work">[ · O p e n T o W o r k · ]</h2> 
+    </a> <a href="#art-direction" class="intro-work-cta nav-btn glitch-text" data-splitting data-i18n-split="intro.cta" aria-label="See my work">[ · s e e · m y · w o r k · ]</a> <!-- Cyberpunk panel - slides in after 2 seconds -->
+    <div class="cyber-panel" id="introCyberPanel">
+     <div class="cyber-panel__sidebar"></div>
+     <div class="cyber-panel__body">
+      <div class="cyber-panel__backdrop">
+       <div class="date glitch-text" data-splitting></div>
+       <div class="corner"></div>
+      </div>
+      <!-- Animated frame lines -->
+      <div class="panel-line panel-line--top"></div>
+      <div class="panel-line panel-line--bottom"></div>
+      <div class="panel-line panel-line--right"></div>
+     </div>
+    </div>
+    <!-- Social Media Icons -->
+    <ul class="social-media-icons" aria-label="Social media profiles">
+     <li><a class="instagram" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label on Instagram"> <span></span> <span></span> <span></span> <span></span> 
+       <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+        <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+       </svg> </a></li>
+     <li><a class="linkedin" href="https://www.linkedin.com/in/Nikolay-ai" target="_blank" rel="noopener noreferrer" aria-label="Nikolay on LinkedIn"> <span></span> <span></span> <span></span> <span></span> 
+       <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+        <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" />
+       </svg> </a></li>
+    </ul>
+    <!-- Info Interface Badge — bottom-left navigation guide, appears with cyber-panel -->
+    <div class="info-interface" id="infoInterface" aria-label="Navigation guide: use the top menu to jump to any section, scroll to explore in sequence, or press See My Work to begin">
+     <svg class="info-interface-svg" viewBox="0 0 564.09 406.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <defs>
+       <clipPath id="inf-bg-clip">
+        <path d="M10.47,239.39c0,36.11,0,72.21,0,108.12,0,7.59-9.47,14.36-9.47,21.95v25.23s529.07,0,529.07,0l15.34-16-.13-.21V1c-177.56,0-355.11,0-532.67,0L1,21.32v204.24l9.47,13.83Z" />
+       </clipPath>
+      </defs>
+      <!-- Dark backdrop clipped to card silhouette -->
+      <rect x="0" y="0" width="564.09" height="406.8" fill="#001219" fill-opacity="0.25" clip-path="url(#inf-bg-clip)" /> <!-- Border — orange, stroke only -->
+      <path d="M10.47,239.39c0,36.11,0,72.21,0,108.12,0,7.59-9.47,14.36-9.47,21.95v25.23s529.07,0,529.07,0l15.34-16-.13-.21V1c-177.56,0-355.11,0-532.67,0L1,21.32v204.24l9.47,13.83Z" fill="none" stroke="#ff3c00" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" /> <!-- Bottom tab accent -->
+      <polygon points="158.13 394.69 169.28 406.8 365.68 406.8 378.21 394.69 158.13 394.69" fill="#ff3c00" /> <!-- Right side accent -->
+      <polygon points="545.41 162.3 564.09 149.42 564.09 16.17 545.28 1 545.41 162.3" fill="#ff3c00" /> <!-- ── English ─────────────────────────────────────── -->
+      <g class="inf-lang" id="inf-en">
+       <text class="info-line" style="--i:0" x="28" y="38" font-family="'Funnel Display', sans-serif" font-size="18" fill="#E9D8A6" letter-spacing="3">[ · HOW TO NAVIGATE · ]</text> <line class="info-line info-line--rule" style="--i:1" x1="14" y1="52" x2="530" y2="52" stroke="#E9D8A6" stroke-width="1" opacity="0.35" /> <text class="info-line" data-hint="nav" style="--i:2" x="28" y="84" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 01 ·</tspan><tspan font-size="26"> TOP MENU</tspan></text> <text class="info-line" style="--i:3" x="50" y="106" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· jump to any section</text> <text class="info-line" style="--i:4" x="28" y="146" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 02 ·</tspan><tspan font-size="26"> SCROLL</tspan></text> <text class="info-line" style="--i:5" x="50" y="168" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· explore in sequence</text> <text class="info-line" data-hint="cta" style="--i:6" x="28" y="208" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 03 ·</tspan><tspan font-size="26"> see my work →</tspan></text> <text class="info-line" style="--i:7" x="50" y="230" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· curated entry point</text> <text class="info-line" data-hint="sound" style="--i:8" x="28" y="270" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 04 ·</tspan><tspan font-size="26"> SOUND</tspan></text> <text class="info-line" style="--i:9" x="50" y="292" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· mute / unmute top right</text> <text class="info-line" data-hint="lang" style="--i:10" x="28" y="332" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 05 ·</tspan><tspan font-size="26"> LANGUAGE</tspan></text> <text class="info-line" style="--i:11" x="50" y="354" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· switch EN / ES top right</text> <line class="info-line info-line--rule" style="--i:12" x1="14" y1="364" x2="530" y2="364" stroke="#E9D8A6" stroke-width="1" opacity="0.35" /> <text class="info-line" style="--i:13" x="28" y="388" font-family="'Funnel Display', sans-serif" font-size="18" fill="#E9D8A6" opacity="0.9">choose your path ·</text>
+      </g>
+      <!-- ── Spanish (hidden initially) ──────────────────── -->
+      <g class="inf-lang" id="inf-es" style="display:none">
+       <text class="info-line" style="--i:0" x="28" y="38" font-family="'Funnel Display', sans-serif" font-size="18" fill="#E9D8A6" letter-spacing="3">[ · CÓMO NAVEGAR · ]</text> <line class="info-line info-line--rule" style="--i:1" x1="14" y1="52" x2="530" y2="52" stroke="#E9D8A6" stroke-width="1" opacity="0.35" /> <text class="info-line" data-hint="nav" style="--i:2" x="28" y="84" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 01 ·</tspan><tspan font-size="26"> MENÚ SUPERIOR</tspan></text> <text class="info-line" style="--i:3" x="50" y="106" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· salta a cualquier sección</text> <text class="info-line" style="--i:4" x="28" y="146" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 02 ·</tspan><tspan font-size="26"> DESPLÁZATE CON SCROLL</tspan></text> <text class="info-line" style="--i:5" x="50" y="168" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· explora las secciones en secuencia</text> <text class="info-line" data-hint="cta" style="--i:6" x="28" y="208" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 03 ·</tspan><tspan font-size="26"> ver mi trabajo →</tspan></text> <text class="info-line" style="--i:7" x="50" y="230" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· punto de entrada</text> <text class="info-line" data-hint="sound" style="--i:8" x="28" y="270" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 04 ·</tspan><tspan font-size="26"> SONIDO</tspan></text> <text class="info-line" style="--i:9" x="50" y="292" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· silenciar / activar arriba</text> <text class="info-line" data-hint="lang" style="--i:10" x="28" y="332" font-family="'Funnel Display', sans-serif" fill="#E9D8A6"><tspan font-size="14" opacity="0.6">· 05 ·</tspan><tspan font-size="26"> IDIOMA</tspan></text> <text class="info-line" style="--i:11" x="50" y="354" font-family="'Funnel Display', sans-serif" font-size="20" fill="#E9D8A6" opacity="0.9">· cambiar EN / ES arriba</text> <line class="info-line info-line--rule" style="--i:12" x1="14" y1="364" x2="530" y2="364" stroke="#E9D8A6" stroke-width="1" opacity="0.35" /> <text class="info-line" style="--i:13" x="28" y="388" font-family="'Funnel Display', sans-serif" font-size="18" fill="#E9D8A6" opacity="0.9">elige tu camino ·</text>
+      </g>
+      <!-- ── Hotspot hit areas — recalculated for new Y positions ── -->
+      <g id="inf-hotspots">
+       <rect class="inf-hotspot" data-hint="nav" x="0" y="52" width="545" height="74" fill="transparent" /> <rect class="inf-hotspot" data-hint="scroll" x="0" y="126" width="545" height="62" fill="transparent" /> <rect class="inf-hotspot" data-hint="cta" x="0" y="188" width="545" height="62" fill="transparent" /> <rect class="inf-hotspot" data-hint="sound" x="0" y="250" width="545" height="62" fill="transparent" /> <rect class="inf-hotspot" data-hint="lang" x="0" y="312" width="545" height="52" fill="transparent" />
+      </g>
+     </svg>
+    </div>
+    <!-- Scroll cue — revealed when the "02 SCROLL" how-to row is hovered.
+                 Same bracketed [ ] + ▼▼▼ + "[ · Scroll to explore · ]" message as
+                 the illustration section (see css/main.css). -->
+    <div class="intro-scroll-cue" aria-hidden="true">
+     <svg class="iscue-arrow" viewBox="0 0 100 110" fill="none" aria-hidden="true" focusable="false">
+      <polyline class="iscue-bracket" points="22 4 10 4 10 102 22 102" /> <polyline class="iscue-bracket" points="78 4 90 4 90 102 78 102" /> <polygon class="iscue-chev iscue-chev-0" points="28 8 50 24 72 8 72 18 50 34 28 18" /> <polygon class="iscue-chev iscue-chev-1" points="28 34 50 50 72 34 72 44 50 60 28 44" /> <polygon class="iscue-chev iscue-chev-2" points="28 60 50 76 72 60 72 70 50 86 28 70" />
+     </svg>
+     <span class="iscue-text">[ · Scroll to explore · ]</span>
+    </div>
+    <!-- Mobile-only hero frame: the dnacapsule1 capsule shell, scaled to
+                 the viewport edge. Desktop renders nothing (hidden ≥769px); all
+                 styling lives in css/main.css (≤768px). Houses two looping
+                 tickers, one per top bar of the capsule. Decorative (aria-hidden). -->
+    <div class="intro-frame-mobile" aria-hidden="true">
+     <!-- Capsule frame, inlined so each line can scale-grow on entry
+                     like the desktop .panel-line draw. Sits behind the tickers. -->
+     <svg class="ifm-svg" viewBox="5 0 193 410.66" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="ifm-gx" style="--d:0s" d="M13.73,409.34h184.05c0-133.12,0-266.23,0-399.35l-7.77-8.71c-52.81-.65-70.27,0-97.98,0-3.37,0-7.05,7.11-10.42,7.11-17.58,0-35.15,0-52.73,0-3.68,0-7.04-7.11-10.72-7.11-4.09,0-8.18,0-12.27,0v396.55l7.83,11.5Z" /> <polygon class="ifm-gy" style="--d:0.25s" points="5.89 117.36 0 125.44 0 268.15 5.89 277.23 5.89 117.36" /> <polygon class="ifm-gy" style="--d:0.5s" points="197.78 409.34 207.55 400.69 207.55 309.48 198.5 300.43 197.78 409.34" /> <rect class="ifm-gx" style="--d:0.3s" x="5.89" y="15.32" width="191.88" height="8.75" /> <rect class="ifm-gx" style="--d:0.4s" x="5.89" y="42" width="191.88" height="8.75" />
+     </svg>
+     <!-- Top bar (y=15.32): invitation, counter-scrolls -->
+     <div class="ifm-ticker ifm-ticker--top">
+      <div class="ifm-ticker-track">
+       <span class="ifm-ticker-seq">· More to Explore on Desktop&nbsp; ✦ &nbsp;· More to Explore on Desktop&nbsp; ✦ &nbsp;· More to Explore on Desktop&nbsp; ✦ &nbsp;</span> <span class="ifm-ticker-seq">· More to Explore on Desktop&nbsp; ✦ &nbsp;· More to Explore on Desktop&nbsp; ✦ &nbsp;· More to Explore on Desktop&nbsp; ✦ &nbsp;</span>
+      </div>
+     </div>
+     <!-- Bottom bar (y=33.09): positioning / status / CTA / skills -->
+     <div class="ifm-ticker ifm-ticker--bottom">
+      <div class="ifm-ticker-track">
+       <!-- two identical sequences → translateX(-50%) loops seamlessly -->
+       <span class="ifm-ticker-seq">Senior Art Director · Photographer · Bogotá&nbsp; ✦ &nbsp;Open to Work · Available for Freelance&nbsp; ✦ &nbsp;Let's Build Something · <span data-eml data-eml-text></span>&nbsp; ✦ &nbsp;Branding · Art Direction · 3D · Editorial · Photography&nbsp; ✦ &nbsp;</span> <span class="ifm-ticker-seq">Senior Art Director · Photographer · Bogotá&nbsp; ✦ &nbsp;Open to Work · Available for Freelance&nbsp; ✦ &nbsp;Let's Build Something · <span data-eml data-eml-text></span>&nbsp; ✦ &nbsp;Branding · Art Direction · 3D · Editorial · Photography&nbsp; ✦ &nbsp;</span>
+      </div>
+     </div>
+    </div>
+    <div class="scanlines"></div>
+    <div class="vhs-static"></div>
+   </section>
+   <div class="about-pin-wrapper">
+    <section id="about" aria-label="About Nikolay">
+     <!-- ════ TOP SECTION — single full-width column ════
+                 Row: title + id badge · then the quote · then bar1 (divider) -->
+     <div class="about-top">
+      <div class="about-top-head">
+       <div class="about-intro">
+        <h2 id="abouttitle" class="glitch-text subtitle-glitch" data-splitting><span class="title-line-1">·Hello!</span>
+         <br>
+         <span class="title-line-2">I'm</span>
+         <br>
+         <span class="title-line-3">Nikolay</span>
+         <br>
+         <span class="title-line-4">Nikolay-ai</span></h2>
+        <p id="aboutp1" data-i18n-html="about.p1">Senior Art Director &amp; Photographer. Based in Bogotá, Colombia. I approach projects with a global vision, talking with the client to understand their brand and its DNA, focusing on what is the best way to implement an idea for the project, and how to translate it across various media: from web architecture and user experience design, to photography, illustration, and comprehensive branding.
+         <br>
+         <span class="about-highlight">This portfolio itself was built using vibe coding, combining AI-assisted development with my UX/UI expertise</span>, and is fully optimized for both traditional search engines and AI-powered search.</p>
+       </div>
+       <div class="about-id-stack">
+        <img loading="lazy" decoding="async" id="id1svg" src="images/id1.svg" alt="Nikolay — Art Director profile badge"> <!-- HUD "descend" cue mirroring #art-direction's red intro-frame
+                             arrow (adfrm-arrow): a bracketed scroll prompt (replaces the old
+                             dotted feed line) → [ ] target brackets → three down-chevrons that
+                             pulse top→bottom. Points the eye from the badge down into the bio.
+                             Decorative; self-contained classes (.aid-*) so it doesn't couple
+                             to the art-direction SVG. -->
+        <span class="about-id-scroll" aria-label="Scroll to explore">[ · Scroll to explore · ]</span>
+        <svg class="about-id-arrow" viewBox="0 0 100 110" fill="none" aria-hidden="true" focusable="false">
+         <polyline class="aid-bracket" points="22 4 10 4 10 102 22 102" /> <polyline class="aid-bracket" points="78 4 90 4 90 102 78 102" /> <polygon class="aid-chev aid-chev-0" points="28 8 50 24 72 8 72 18 50 34 28 18" /> <polygon class="aid-chev aid-chev-1" points="28 34 50 50 72 34 72 44 50 60 28 44" /> <polygon class="aid-chev aid-chev-2" points="28 60 50 76 72 60 72 70 50 86 28 70" />
+        </svg>
+       </div>
+      </div>
+      <div class="paul-rands-quote">
+       <blockquote>
+        <p class="glitch-text" data-splitting aria-label="&quot;Design"><span>· " D e s i g n &nbsp;</span></p>
+        <ul>
+         <li class="glitch-text" data-splitting>can be art ·</li>
+         <li class="glitch-text" data-splitting>can be aesthetics ·</li>
+         <li class="glitch-text" data-splitting>is so simple,</li>
+        </ul>
+       </blockquote>
+       <p class="ending glitch-text" data-splitting>that's why it's so complicated." ·
+        <br>
+        <i>— · P a u l R a n d ·</i></p>
+      </div>
+      <img loading="lazy" decoding="async" class="decoration-bar1" src="images/bar1.svg" alt="" role="presentation">
+     </div>
+     <!-- ════ TWO COLUMNS — organized, non-overlapping ════ -->
+     <div class="about-container">
+      <!-- Left Column -->
+      <div class="about-left">
+       <div id="about-availability">
+        <span class="availability-dot"></span> Available for freelance — 2026
+       </div>
+       <p id="aboutp2" data-i18n-html="about.p2">As a UX/UI designer, my goal is to transform a brand's vision into engaging digital and tangible experiences that are clear and authentic. I currently work as an independent freelance professional, helping my clients to tell their stories through design.
+        <br>
+        <br>
+        I'm now embracing vibe coding, using AI with my creative Art Direction skills to take them to the next level and build exceptional projects like this portfolio.</p>
+       <div id="about-metrics">
+        <span>10+ years</span> <span class="metrics-sep">·</span> <span>50+ projects</span> <span class="metrics-sep">·</span> <span>Bogotá → Worldwide</span>
+       </div>
+       <!-- Skills graphic — full design lives in the SVG -->
+       <div class="decoration-skills">
+        <img loading="lazy" decoding="async" class="skills-svg" src="images/skills.svg" alt="Skills: Art Direction, Photography, UX/UI, Branding, Illustration, Web Design, Typography, Color Theory">
+       </div>
+       <p id="aboutp3" data-i18n-html="about.p3">My work is an extension of my lifestyle: I am constantly learning about technology, tendencies, techniques. Always looking for references. I look for aesthetics everywhere, whether in the forms of nature, architecture, urban colors, pop culture or everyday details.
+        <br>
+        <br>
+        <span class="about-highlight">I strongly believe that constant learning is the best way to create good design.</span></p>
+      </div>
+      <!-- Right Column -->
+      <div class="about-right">
+       <!-- DNA Capsule and Title - Side by Side -->
+       <div class="dna-title-wrapper">
+        <div class="dna-capsule">
+         <!-- SVG Capsule Container -->
+         <svg id="dnacapsule1" class="dna-capsule-svg" viewBox="0 0 207.55 410.66">
+          <defs>
+           <clipPath id="clippath">
+            <rect x="70.35" y="384.46" width="79.21" height="20.27" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" />
+           </clipPath>
+          </defs>
+          <g id="Layer_1-2">
+           <!-- Main capsule outline -->
+           <path class="capsule-outline" d="M13.73,409.34h184.05c0-133.12,0-266.23,0-399.35l-7.77-8.71c-52.81-.65-70.27,0-97.98,0-3.37,0-7.05,7.11-10.42,7.11-17.58,0-35.15,0-52.73,0-3.68,0-7.04-7.11-10.72-7.11-4.09,0-8.18,0-12.27,0v396.55l7.83,11.5Z" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <!-- Left accent polygon -->
+           <polygon class="capsule-accent-left" points="5.89 117.36 0 125.44 0 268.15 5.89 277.23 5.89 117.36" style="fill:#001219;" /> <!-- Right accent polygon -->
+           <polygon class="capsule-accent-right" points="197.78 409.34 207.55 400.69 207.55 309.48 198.5 300.43 197.78 409.34" style="fill:#001219;" /> <!-- Top bars -->
+           <rect class="capsule-bar-top-1" x="5.89" y="15.32" width="191.88" height="8.75" style="fill:#001219;" /> <rect class="capsule-bar-top-2" x="5.89" y="33.09" width="191.88" height="8.75" style="fill:#001219;" /> <!-- Vertical lines -->
+           <line class="capsule-line-vert-1" x1="14.17" y1="45.63" x2="14.17" y2="394.6" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-vert-2" x1="18.97" y1="45.63" x2="18.97" y2="46.13" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-dashed-1" x1="18.97" y1="51.23" x2="18.97" y2="60.93" style="fill:none; stroke:#001219; stroke-dasharray:1.02 5.1 1.02 5.1; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-dashed-2" x1="18.97" y1="63.48" x2="18.97" y2="391.55" style="fill:none; stroke:#001219; stroke-dasharray:1.02 5.1 1.02 5.1 1.02 5.1; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-vert-3" x1="18.97" y1="394.1" x2="18.97" y2="394.6" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <!-- Left side horizontal lines -->
+           <line class="capsule-line-horiz-left-1" x1="18.97" y1="204.83" x2="26.84" y2="204.83" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-horiz-left-2" x1="18.97" y1="241.49" x2="26.84" y2="241.49" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-horiz-left-3" x1="18.97" y1="168.17" x2="26.84" y2="168.17" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <!-- Right side horizontal lines (top) -->
+           <line class="capsule-line-horiz-right-1" x1="164.33" y1="341.05" x2="190.91" y2="341.05" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-horiz-right-2" x1="164.33" y1="337.02" x2="190.91" y2="337.02" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-horiz-right-3" x1="164.33" y1="332.98" x2="190.91" y2="332.98" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-top-right" x1="184.9" y1="28.71" x2="192.77" y2="28.71" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <!-- Bottom horizontal lines -->
+           <line class="capsule-line-bottom-1" x1="56.33" y1="403.58" x2="65.22" y2="403.58" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-bottom-2" x1="56.33" y1="399.54" x2="65.22" y2="399.54" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <line class="capsule-line-bottom-3" x1="56.33" y1="395.51" x2="65.22" y2="395.51" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" /> <!-- Binary text -->
+           <text class="capsule-text" transform="translate(153.03 349.31) scale(2.34 1)" style="fill:#001219; font-family:'Funnel Display', sans-serif; font-size:5.66px; font-weight:700;"> <tspan x="0" y="0">01000010</tspan> <tspan x="0" y="6.79">01110010</tspan> <tspan x="0" y="13.57">01100001</tspan> <tspan x="0" y="20.36">01101110</tspan> <tspan x="0" y="27.14">01100100</tspan> <tspan x="0" y="33.93">00100000</tspan> <tspan x="0" y="40.72">01000100</tspan> <tspan x="0" y="47.5">01001110</tspan> <tspan x="0" y="54.29">01000001</tspan> </text> <!-- Top right corner notch -->
+           <polygon class="capsule-notch" points="179.73 45.63 192.77 45.63 192.77 58.67 179.73 45.63" style="fill:#001219;" /> <!-- Diagonal bars at bottom (clipped) -->
+           <g class="capsule-diagonals" style="clip-path:url(#clippath);">
+            <rect x="131.11" y="390.88" width="37.99" height="7.43" transform="translate(-235.06 221.72) rotate(-45)" style="fill:#001219;" /> <rect x="115.05" y="390.88" width="37.99" height="7.43" transform="translate(-239.77 210.36) rotate(-45)" style="fill:#001219;" /> <rect x="98.98" y="390.88" width="37.99" height="7.43" transform="translate(-244.47 199) rotate(-45)" style="fill:#001219;" /> <rect x="82.92" y="390.88" width="37.99" height="7.43" transform="translate(-249.17 187.64) rotate(-45)" style="fill:#001219;" /> <rect x="66.86" y="390.88" width="37.99" height="7.43" transform="translate(-253.88 176.29) rotate(-45)" style="fill:#001219;" /> <rect x="50.8" y="390.88" width="37.99" height="7.43" transform="translate(-258.58 164.93) rotate(-45)" style="fill:#001219;" />
+           </g>
+           <!-- Diagonal clip border -->
+           <rect class="capsule-clip-border" x="70.35" y="384.46" width="79.21" height="20.27" style="fill:none; stroke:#001219; stroke-linecap:round; stroke-linejoin:round; stroke-width:2px;" />
+          </g>
+         </svg>
+         <!-- DNA 3D text animation -->
+         <div class="scene">
+          <div class="texts">
+           <div class="text" style="--text: 0;">
+            <span style="--i: 0;">·</span> <span style="--i: 1;">·</span> <span style="--i: 2;">M</span> <span style="--i: 3;">a</span> <span style="--i: 4;">s</span> <span style="--i: 5;">t</span> <span style="--i: 6;">e</span> <span style="--i: 7;">r</span> <span style="--i: 8;">i</span> <span style="--i: 9;">n</span> <span style="--i: 10;">g</span> <span style="--i: 11;">·</span> <span style="--i: 12;">·</span>
+           </div>
+           <div class="text" style="--text: 1;"></div>
+           <div class="text" style="--text: 2;">
+            <span style="--i: 0;">Y</span> <span style="--i: 1;">o</span> <span style="--i: 2;">u</span> <span style="--i: 3;">r</span> <span style="--i: 4;">·</span> <span style="--i: 5;">B</span> <span style="--i: 6;">r</span> <span style="--i: 7;">a</span> <span style="--i: 8;">n</span> <span style="--i: 9;">d'</span> <span style="--i: 10;">s</span> <span style="--i: 11;">·</span> <span style="--i: 12;">D</span> <span style="--i: 13;">N</span> <span style="--i: 14;">A</span>
+           </div>
+          </div>
+         </div>
+        </div>
+        <h2 id="dnatitle" class="glitch-text subtitle-glitch" data-splitting>·Let's discover
+         <br>
+         what sets
+         <br>
+         your Brand
+         <br>
+         Apart.
+         <br>
+         It's
+         <br>
+         DNA·</h2>
+       </div>
+       <p id="aboutp4" data-i18n-html="about.p4">My process begins with listening. It's not just about delivering a design, but about co-creating a visual language, that is the way to create good design. By talking with you we can <span class="about-highlight">understand your Brand's DNA,</span> translating it coherently into any format you need, whether it's relaunching your web platform, defining your photographic style, or conceptualizing your entire branding. <span class="about-p4-keep"><a href="#" class="about-cta-marker" data-eml><em><strong>Let's work together</strong></em></a> to ensure your design doesn't just look good, but feels authentic and delivers a tangible impact on your audience.
+         <br>
+         <br>You can explore what I've studied in the certificates gallery below and experience what I've done with it throughout this very project.</span></p>
+       <!-- Certificate Gallery - Independent Layer -->
+       <!-- Certificate Gallery -->
+       <div class="cert-gallery-layer">
+        <img loading="lazy" decoding="async" class="decoration-certs1" src="images/certs1.svg" alt="" role="presentation"> <img loading="lazy" decoding="async" class="decoration-vtv1" src="images/vtv1.svg" alt="" role="presentation">
+        <div class="cert-cube-wrapper">
+         <div class="cert-cube-scene" role="button" tabindex="0" aria-label="View certificate full size">
+          <div class="cert-cube" aria-hidden="true">
+           <div class="cert-face" data-face="top"></div>
+           <div class="cert-face" data-face="front"></div>
+           <div class="cert-face" data-face="right"></div>
+           <div class="cert-face" data-face="back"></div>
+           <div class="cert-face" data-face="left"></div>
+           <div class="cert-face" data-face="bottom"></div>
+          </div>
+         </div>
+         <div class="cert-cube-nav">
+          <button class="cert-prev glitch-text" data-splitting aria-label="Previous certificate">[ · P r e v · ]</button>
+          <span class="cert-counter" aria-live="polite">01 / 09</span>
+          <button class="cert-next glitch-text" data-splitting aria-label="Next certificate">[ · N e x t · ]</button>
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- Seal CTA — Let's Work Together -->
+      <div class="seal-cta-wrapper">
+       <a href="#" class="seal-cta" id="seal-cta" data-eml aria-label="Let's work together — send email to Nik"> 
+        <svg class="seal-svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+         <g class="seal-ring-group">
+          <circle class="seal-ring-outer" cx="100" cy="100" r="90" />
+         </g>
+         <g class="seal-ticks">
+          <line x1="100" y1="4" x2="100" y2="16" /> <line x1="163.6" y1="36.4" x2="155.0" y2="45.0" /> <line x1="196" y1="100" x2="184" y2="100" /> <line x1="163.6" y1="163.6" x2="155.0" y2="155.0" /> <line x1="100" y1="196" x2="100" y2="184" /> <line x1="36.4" y1="163.6" x2="45.0" y2="155.0" /> <line x1="4" y1="100" x2="16" y2="100" /> <line x1="36.4" y1="36.4" x2="45.0" y2="45.0" />
+         </g>
+         <circle class="seal-ring-inner" cx="100" cy="100" r="72" /> <polygon class="seal-body" points="162.8,126 126,162.8 73.9,162.8 37.2,126 37.2,73.9 73.9,37.2 126,37.2 162.8,73.9" /> <line class="seal-circuit" x1="60" y1="100" x2="76" y2="100" /> <line class="seal-circuit" x1="124" y1="100" x2="140" y2="100" /> <line class="seal-circuit" x1="100" y1="60" x2="100" y2="76" /> <line class="seal-circuit" x1="100" y1="124" x2="100" y2="140" /> <circle class="seal-circuit-dot" cx="76" cy="100" r="2" /> <circle class="seal-circuit-dot" cx="124" cy="100" r="2" /> <circle class="seal-circuit-dot" cx="100" cy="76" r="2" /> <circle class="seal-circuit-dot" cx="100" cy="124" r="2" /> <text class="seal-monogram" x="100" y="87" text-anchor="middle">S · A</text> <line class="seal-sep" x1="72" y1="96" x2="128" y2="96" />
+        </svg> 
+        <div class="seal-text-layer">
+         <span class="seal-label glitch-text" data-splitting>LET'S WORK</span> <span class="seal-label glitch-text" data-splitting>TOGETHER</span>
+        </div> 
+       </a>
+       <ul class="social-media-icons about-social-icons" aria-label="Social media profiles">
+        <li><a class="instagram" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Nikolay on Instagram"> <span></span> <span></span> <span></span> <span></span> 
+          <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+           <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+          </svg> </a></li>
+        <li><a class="linkedin" href="https://www.linkedin.com/in/Nikolay-ai" target="_blank" rel="noopener noreferrer" aria-label="Nikolay on LinkedIn"> <span></span> <span></span> <span></span> <span></span> 
+          <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+           <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" />
+          </svg> </a></li>
+       </ul>
+      </div>
+     </div>
+     <!-- Decorative SVG Graphics -->
+     <div class="svg-decorations">
+      <img loading="lazy" decoding="async" class="decoration-bar2" src="images/bar2.svg" alt="" role="presentation"> <!-- skills block moved into .about-left -->
+     </div>
+     <!-- Paul Rand quote relocated into .about-top -->
+     <!-- Certificate Modal/Lightbox -->
+     <div id="certModal" class="cert-modal hidden">
+      <div class="cert-modal-backdrop"></div>
+      <div class="cert-modal-content">
+       <button class="cert-modal-close glitch-text" data-splitting aria-label="Close">[ · X · ]</button>
+       <img id="certModalImage" src="" alt="Certificate enlarged view">
+      </div>
+     </div>
+     <canvas class="about-top-static-line"></canvas>
+     <canvas class="about-bottom-static-line"></canvas>
+     <div class="scanlines"></div>
+     <div class="vhs-static"></div>
+    </section>
+   </div>
+   <!-- Pin wrapper: #art-direction sticks at top:0 (frozen) while the fixed
+             #photo curtain reveals over it. The spacer provides the pin distance.
+             Sticky reserves flow space, so the photo-reveal math is unaffected. -->
+   <div class="ad-pin-wrap">
+    <section id="art-direction" aria-label="Art Direction Portfolio">
+     <!-- Background layer: static-line canvas, SVG filters, VHS overlay -->
+     <div class="background">
+      <div class="art-bg-image" aria-hidden="true"></div>
+      <canvas class="art-direction-bottom-static-line"></canvas>
+      <!-- RGB channel-split SVG filters for letter glitch hover effect -->
+      <svg class="art-glitch-filters" aria-hidden="true">
+       <defs>
+        <filter id="artGlitchRed">
+         <feColorMatrix mode="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+        </filter>
+        <filter id="artGlitchGreen">
+         <feColorMatrix mode="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+        </filter>
+        <filter id="artGlitchBlue">
+         <feColorMatrix mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+        </filter>
+       </defs>
+      </svg>
+      <div class="scanlines"></div>
+      <div class="vhs-static"></div>
+     </div>
+     <div class="art-direction-grid">
+      <div class="art-row">
+       <div class="art-cell" data-letter="A">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="R">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="T">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+      </div>
+      <div class="art-row">
+       <div class="art-cell" data-letter="D">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="I">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+      </div>
+      <div class="art-row">
+       <div class="art-cell" data-letter="R">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="E">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="C">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+      </div>
+      <div class="art-row">
+       <div class="art-cell" data-letter="T">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="I">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="O">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+       <div class="art-cell" data-letter="N">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="glitch-r" aria-hidden="true"></div>
+        <div class="glitch-g" aria-hidden="true"></div>
+        <div class="glitch-b" aria-hidden="true"></div>
+       </div>
+      </div>
+     </div>
+     <!-- Left-edge skills bar (inline so colors are CSS-controllable) -->
+     <svg class="ad-skills-bar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37.5 997.6" aria-hidden="true" focusable="false">
+      <defs>
+      </defs>
+      <line class="adbar-none" x1="36.5" y1="17" x2="36.5" y2="996.6" /> <line class="adbar-dash" x1="36.5" y1="1" x2="36.5" y2="983.6" /> <line class="adbar-line" x1="36.5" y1="990.6" x2="36.5" y2="996.6" />
+      <g>
+       <polygon class="adbar-box" points="0 0 35.8 0 35.8 214.4 0 191.9 0 0" />
+       <g>
+        <path class="adbar-white" d="M26.9,174.2H9.4v-5.2h2.1v2.9h13.5v-2.9h2.1v5.2h-.2Z" /> <path class="adbar-white" d="M20,160.8c0,.4,0,.8-.4,1.2s-.8.4-1.2.4-.8,0-1.2-.4-.4-.8-.4-1.2,0-.8.4-1.2.8-.4,1.2-.4.8,0,1.2.4.4.8.4,1.2Z" /> <path class="adbar-white" d="M24,145.9c0,1.9-.4,3.5-1.3,4.6s-1.9,1.7-3.5,1.9v-2.9c.8,0,1.5-.4,1.9-1.2.4-.6.6-1.5.6-2.7s0-1.7-.6-2.3c-.4-.6-.8-.8-1.5-.8s-1,0-1.2.6c-.4.4-.6,1-.8,1.5l-.6,2.9c0,1.3-.8,2.3-1.3,2.9s-1.5,1-2.5,1-2.3-.4-3.1-1.5c-.8-1-1.2-2.3-1.2-4s.4-3.1,1.2-4.2c.8-1.2,1.9-1.7,3.3-1.7v2.9c-1.5.4-2.3,1.5-2.3,3.3s0,1.5.4,1.9c.4.4.8.8,1.3.8,1,0,1.5-.6,1.7-1.9l.6-3.1c0-1.3.8-2.3,1.3-2.9s1.5-1,2.7-1,2.5.6,3.3,1.5,1.2,2.5,1.2,4.2h.4v.2Z" /> <path class="adbar-white" d="M23.9,133.1h-15v-2.7h8.3l-4-4.4v-3.1l4.2,4.6,6.5-5v3.1l-4.8,3.7,1,1.3h3.8v2.7h0v-.2Z" /> <path class="adbar-white" d="M11.9,114.4c0,.4,0,.8-.4,1-.2.4-.6.4-1.2.4s-.8,0-1.2-.4-.4-.6-.4-1,0-.8.4-1c.4-.4.6-.4,1.2-.4s.8,0,1.2.4c.2.4.4.6.4,1ZM23.9,115.7h-10.8v-2.7h10.6v2.7h.2Z" /> <path class="adbar-white" d="M23.9,105.4h-15v-2.7h15v2.7Z" /> <path class="adbar-white" d="M23.9,95h-15v-2.7h15v2.7Z" /> <path class="adbar-white" d="M24,80.2c0,1.5-.4,2.7-1,3.7s-1.5,1.3-2.7,1.5v-2.5c.6,0,1-.4,1.2-.8s.4-1,.4-1.9-.4-2.1-1.2-2.1-.6,0-.8.4c0,0-.4.6-.4,1l-.4,2.3c-.4,2.1-1.3,3.1-2.9,3.1s-1.7-.4-2.3-1.2-1-1.9-1-3.3.4-2.5,1-3.3c.6-.8,1.5-1.3,2.5-1.3v2.5c-.6,0-1,.4-1.2.8,0,.4-.4,1-.4,1.5s0,1.2.4,1.3c0,.4.4.4.8.4s.4,0,.6-.4c0,0,.4-.6.4-1l.4-2.3c0-1.2.6-1.9,1.2-2.3.6-.6,1.2-.8,1.9-.8s1.9.4,2.5,1.2,1,1.9,1,3.5h0Z" /> <path class="adbar-white" d="M20,67.3c0,.4,0,.8-.4,1.2s-.8.4-1.2.4-.8,0-1.2-.4-.4-.8-.4-1.2,0-.8.4-1.2.8-.4,1.2-.4.8,0,1.2.4.4.8.4,1.2Z" /> <path class="adbar-white" d="M26.9,59.2h-2.1v-2.9h-13.5v2.9h-1.9v-5.2h17.5v5.2Z" />
+       </g>
+       <polygon class="adbar-white" points="17.9 0 22.1 13 35.8 13 24.7 21 28.9 34 17.9 26 6.8 34 11.1 21 0 13 13.7 13 17.9 0" />
+      </g>
+     </svg>
+     <!-- Intro text — section intro, shown on first load before a discipline is selected -->
+     <div class="ad-intro-text" aria-label="Art Direction section introduction">
+      <svg class="ad-projects-bar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.1 276.8" aria-hidden="true" focusable="false">
+       <defs>
+       </defs>
+       <g>
+        <polygon class="adproj-box" points="0 0 18.6 0 18.6 143.6 0 132.6 0 0" /> <text class="adproj-text" transform="translate(11.8 122.7) rotate(-90)"><tspan x="0" y="0" data-i18n="ad.bar.projects">[ · p r o j e c t s · ]</tspan></text> <line class="adproj-dash" x1="18.6" y1="1.4" x2="18.6" y2="293.8" />
+       </g>
+       <polygon class="adproj-star" points="9.3 0 11.5 6.8 18.6 6.8 12.9 10.9 15 17.7 9.3 13.5 3.6 17.7 5.7 10.9 0 6.8 7.1 6.8 9.3 0" />
+      </svg>
+      <p class="iad-header" data-i18n="ad.intro.header" data-content="[ · ART DIRECTION · ]">[ · ART DIRECTION · ]</p>
+      <p class="iad-body" data-i18n="ad.intro.body">Senior Art Director with over 10 years of experience in brand identity, editorial design and digital products. This section holds a selection of that work, sorted by discipline. Pick one from the panel below and explore.</p>
+      <ul class="social-media-icons ad-social-icons" aria-label="Social media profiles">
+       <li><a class="linkedin" href="https://www.linkedin.com/in/Nikolay-ai" target="_blank" rel="noopener noreferrer" aria-label="Nikolay on LinkedIn"> <span></span><span></span><span></span><span></span> 
+         <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+          <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" />
+         </svg> </a></li>
+      </ul>
+     </div>
+     <!-- Frame wrapper carries the absolute box geometry so a crisp HTML
+                 label can overlay the chevron arrow (the SVG itself stretches via
+                 preserveAspectRatio="none", which would distort SVG text). -->
+     <div class="ad-intro-frame">
+      <svg class="ad-intro-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 950.9 632.7" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+       <defs>
+        <clipPath id="adfrm-clip">
+         <rect class="adfrm-0" x="36.4" y="42.6" width="79.2" height="20.3" />
+        </clipPath>
+       </defs>
+       <g>
+        <path class="adfrm-2" d="M60.6,606.3h866.5V33.1l-36.6-12.5c-248.6-.9-461.3,0-461.3,0l-49.1,10.2h-248.3l-50.5-10.2H23.7v569.2l36.9,16.5h0Z" /> <polygon class="adfrm-6" points="927.1 606.3 936.9 597.7 936.9 506.5 927.9 497.4 927.1 606.3" /> <rect class="adfrm-6" x="735.3" y="39.3" width="191.9" height="8.8" /> <rect class="adfrm-6" x="735.3" y="57.1" width="191.9" height="8.8" /> <line class="adfrm-2" x1="17.5" y1="25" x2="17.5" y2="582.9" /> <line class="adfrm-2" x1="28.5" y1="42.3" x2="28.5" y2="43.1" /> <line class="adfrm-1" x1="28.5" y1="51.3" x2="28.5" y2="66.8" /> <line id="animate_3" class="adfrm-3" x1="28.5" y1="70.9" x2="28.5" y2="595.3" /> <line class="adfrm-2" x1="28.5" y1="296.8" x2="36.4" y2="296.8" /> <line class="adfrm-2" x1="28.5" y1="355.4" x2="36.4" y2="355.4" /> <line class="adfrm-2" x1="28.5" y1="238.2" x2="36.4" y2="238.2" /> <line class="adfrm-2" x1="893.7" y1="538" x2="920.3" y2="538" /> <line class="adfrm-2" x1="893.7" y1="534" x2="920.3" y2="534" /> <line class="adfrm-2" x1="893.7" y1="530" x2="920.3" y2="530" /> <line class="adfrm-2" x1="914.3" y1="52.7" x2="922.1" y2="52.7" /> <line class="adfrm-2" x1="65.8" y1="602.5" x2="74.7" y2="602.5" /> <line class="adfrm-2" x1="65.8" y1="596.1" x2="74.7" y2="596.1" /> <line class="adfrm-2" x1="65.8" y1="589.6" x2="74.7" y2="589.6" />
+        <g id="animate1" class="adfrm-4">
+         <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 546.3) scale(2.3 1)"><tspan x="0" y="0">01000010</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 553.1) scale(2.3 1)"><tspan x="0" y="0">01110010</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 559.9) scale(2.3 1)"><tspan x="0" y="0">01100001</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 566.6) scale(2.3 1)"><tspan x="0" y="0">01101110</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 573.4) scale(2.3 1)"><tspan x="0" y="0">01100100</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 580.2) scale(2.3 1)"><tspan x="0" y="0">00100000</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 587) scale(2.3 1)"><tspan x="0" y="0">01000100</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 593.8) scale(2.3 1)"><tspan x="0" y="0">01001110</tspan></text></g> <g class="adfrm-4"><text class="adfrm-5" transform="translate(860 600.6) scale(2.3 1)"><tspan x="0" y="0">01000001</tspan></text></g>
+        </g>
+        <polygon class="adfrm-6" points="909.1 69.6 922.1 69.6 922.1 82.6 909.1 69.6" />
+        <g id="animate_2">
+         <g class="adfrm-7">
+          <g>
+           <rect class="adfrm-6" x="97.2" y="49" width="38" height="7.4" transform="translate(-3.2 97.6) rotate(-45)" /> <rect class="adfrm-6" x="81" y="49" width="38" height="7.4" transform="translate(-8 86.2) rotate(-45)" /> <rect class="adfrm-6" x="65.1" y="49" width="38" height="7.4" transform="translate(-12.6 74.9) rotate(-45)" /> <rect class="adfrm-6" x="48.9" y="49" width="38" height="7.4" transform="translate(-17.4 63.5) rotate(-45)" /> <rect class="adfrm-6" x="33" y="49" width="38" height="7.4" transform="translate(-22 52.2) rotate(-45)" /> <rect class="adfrm-6" x="16.9" y="49" width="38" height="7.4" transform="translate(-26.7 40.8) rotate(-45)" />
+          </g>
+         </g>
+        </g>
+        <!-- Down indicator — points at the DISCIPLINES nav card below the frame;
+                     HUD target brackets + chevron cascade (waterfall pulse driven by
+                     .adfrm-chev-N CSS). The prompt above it is the HTML .ad-intro-arrow-label
+                     overlay (replaced the old dashed feed line). Intro state only. -->
+        <g id="adfrm-arrow" transform="translate(-40 0)">
+         <polyline class="adfrm-2" points="646 498 634 498 634 596 646 596" /> <polyline class="adfrm-2" points="702 498 714 498 714 596 702 596" /> <polygon class="adfrm-6 adfrm-chev adfrm-chev-0" points="652 502 674 518 696 502 696 512 674 528 652 512" /> <polygon class="adfrm-6 adfrm-chev adfrm-chev-1" points="652 528 674 544 696 528 696 538 674 554 652 538" /> <polygon class="adfrm-6 adfrm-chev adfrm-chev-2" points="652 554 674 570 696 554 696 564 674 580 652 564" />
+        </g>
+        <rect class="adfrm-2" x="36.4" y="42.6" width="79.2" height="20.3" />
+       </g>
+      </svg>
+      <!-- Crisp HUD prompt sitting where the arrow's dashed dots were,
+                 above the chevron cascade. Positioned over the arrow via % of the
+                 frame box. Intro state only; fades in with the chevrons. -->
+      <span class="ad-intro-arrow-label" aria-hidden="true" data-i18n="ad.intro.arrow">[ · Select a discipline to begin · ]</span> <!-- DNA capsule reused from #about, recolored to the frame red.
+                 Sits in the band right of the intro copy, above the chevron
+                 arrow. adk-* classes (not capsule-*) dodge styles.css's global
+                 capsule-* opacity:0 staging; ring text reuses the global
+                 .texts/.text span 3D geometry, gates live in art-direction-panel.css.
+                 Intro state only, decorative. -->
+      <div class="ad-dna" aria-hidden="true">
+       <svg class="ad-dna-svg" viewBox="0 0 207.55 410.66" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+         <clipPath id="addna-clip">
+          <rect x="70.35" y="384.46" width="79.21" height="20.27" />
+         </clipPath>
+        </defs>
+        <g>
+         <path class="adk-s" d="M13.73,409.34h184.05c0-133.12,0-266.23,0-399.35l-7.77-8.71c-52.81-.65-70.27,0-97.98,0-3.37,0-7.05,7.11-10.42,7.11-17.58,0-35.15,0-52.73,0-3.68,0-7.04-7.11-10.72-7.11-4.09,0-8.18,0-12.27,0v396.55l7.83,11.5Z" /> <polygon class="adk-f" points="5.89 117.36 0 125.44 0 268.15 5.89 277.23 5.89 117.36" /> <polygon class="adk-f" points="197.78 409.34 207.55 400.69 207.55 309.48 198.5 300.43 197.78 409.34" /> <rect class="adk-f" x="5.89" y="15.32" width="191.88" height="8.75" /> <rect class="adk-f" x="5.89" y="33.09" width="191.88" height="8.75" /> <line class="adk-s" x1="14.17" y1="45.63" x2="14.17" y2="394.6" /> <line class="adk-s" x1="18.97" y1="45.63" x2="18.97" y2="46.13" /> <line class="adk-s adk-dash1" x1="18.97" y1="51.23" x2="18.97" y2="60.93" /> <line class="adk-s adk-dash2" x1="18.97" y1="63.48" x2="18.97" y2="391.55" /> <line class="adk-s" x1="18.97" y1="394.1" x2="18.97" y2="394.6" /> <line class="adk-s" x1="18.97" y1="204.83" x2="26.84" y2="204.83" /> <line class="adk-s" x1="18.97" y1="241.49" x2="26.84" y2="241.49" /> <line class="adk-s" x1="18.97" y1="168.17" x2="26.84" y2="168.17" /> <line class="adk-s" x1="164.33" y1="341.05" x2="190.91" y2="341.05" /> <line class="adk-s" x1="164.33" y1="337.02" x2="190.91" y2="337.02" /> <line class="adk-s" x1="164.33" y1="332.98" x2="190.91" y2="332.98" /> <line class="adk-s" x1="184.9" y1="28.71" x2="192.77" y2="28.71" /> <line class="adk-s" x1="56.33" y1="403.58" x2="65.22" y2="403.58" /> <line class="adk-s" x1="56.33" y1="399.54" x2="65.22" y2="399.54" /> <line class="adk-s" x1="56.33" y1="395.51" x2="65.22" y2="395.51" /> <text class="adk-t" transform="translate(153.03 349.31) scale(2.34 1)"> <tspan x="0" y="0">01000010</tspan> <tspan x="0" y="6.79">01110010</tspan> <tspan x="0" y="13.57">01100001</tspan> <tspan x="0" y="20.36">01101110</tspan> <tspan x="0" y="27.14">01100100</tspan> <tspan x="0" y="33.93">00100000</tspan> <tspan x="0" y="40.72">01000100</tspan> <tspan x="0" y="47.5">01001110</tspan> <tspan x="0" y="54.29">01000001</tspan> </text> <polygon class="adk-f" points="179.73 45.63 192.77 45.63 192.77 58.67 179.73 45.63" />
+         <g clip-path="url(#addna-clip)">
+          <rect class="adk-f" x="131.11" y="390.88" width="37.99" height="7.43" transform="translate(-235.06 221.72) rotate(-45)" /> <rect class="adk-f" x="115.05" y="390.88" width="37.99" height="7.43" transform="translate(-239.77 210.36) rotate(-45)" /> <rect class="adk-f" x="98.98" y="390.88" width="37.99" height="7.43" transform="translate(-244.47 199) rotate(-45)" /> <rect class="adk-f" x="82.92" y="390.88" width="37.99" height="7.43" transform="translate(-249.17 187.64) rotate(-45)" /> <rect class="adk-f" x="66.86" y="390.88" width="37.99" height="7.43" transform="translate(-253.88 176.29) rotate(-45)" /> <rect class="adk-f" x="50.8" y="390.88" width="37.99" height="7.43" transform="translate(-258.58 164.93) rotate(-45)" />
+         </g>
+         <rect class="adk-s" x="70.35" y="384.46" width="79.21" height="20.27" />
+        </g>
+       </svg>
+       <div class="scene">
+        <div class="texts">
+         <div class="text" style="--text: 0;">
+          <span style="--i: 0;">·</span> <span style="--i: 1;">·</span> <span style="--i: 2;">M</span> <span style="--i: 3;">a</span> <span style="--i: 4;">s</span> <span style="--i: 5;">t</span> <span style="--i: 6;">e</span> <span style="--i: 7;">r</span> <span style="--i: 8;">i</span> <span style="--i: 9;">n</span> <span style="--i: 10;">g</span> <span style="--i: 11;">·</span> <span style="--i: 12;">·</span>
+         </div>
+         <div class="text" style="--text: 1;"></div>
+         <div class="text" style="--text: 2;">
+          <span style="--i: 0;">Y</span> <span style="--i: 1;">o</span> <span style="--i: 2;">u</span> <span style="--i: 3;">r</span> <span style="--i: 4;">·</span> <span style="--i: 5;">B</span> <span style="--i: 6;">r</span> <span style="--i: 7;">a</span> <span style="--i: 8;">n</span> <span style="--i: 9;">d'</span> <span style="--i: 10;">s</span> <span style="--i: 11;">·</span> <span style="--i: 12;">D</span> <span style="--i: 13;">N</span> <span style="--i: 14;">A</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <!-- Works zone: label + list, top-aligned via flex -->
+     <div class="ad-works-zone">
+      <!-- Works list -->
+      <div class="ad-works-panel" role="region" aria-label="Selected work by discipline">
+       <div class="ad-works-header">
+        <span class="ad-works-pulse"></span> <span class="ad-works-label">· S e l e c t e d W o r k ·</span> <span class="ad-works-disc-name"></span>
+       </div>
+       <div class="ad-works-cols" aria-hidden="true">
+        <span></span> <span class="ad-works-col-label">Project</span> <span class="ad-works-col-label">Scope</span> <span class="ad-works-col-label">Tools</span> <span class="ad-works-col-label ad-col-right">Year</span>
+       </div>
+       <div class="ad-works-table" role="list">
+        <!-- Populated by ArtWorksPanel from WORKS_DATA -->
+       </div>
+      </div>
+     </div>
+     <!-- DISCIPLINES nav card — bottom-right zone, next to N, below project list.
+                 Inline SVG (img can't take clicks) — category rows ARE the section
+                 navigation; replaced the old left-rail .ad-list. The amber highlight
+                 cycle doubles as attract mode until the first selection. -->
+     <nav class="ad-explore-card" aria-label="Art direction disciplines">
+      <svg class="ad-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 564.09 406.8" preserveAspectRatio="xMinYMin meet">
+       <defs>
+        <clipPath id="adnav-clip">
+         <path d="M10.47,239.39c0,36.11,0,72.21,0,108.12,0,7.59-9.47,14.36-9.47,21.95v25.23s529.07,0,529.07,0l15.34-16-.13-.21V1c-177.56,0-355.11,0-532.67,0L1,21.32v204.24l9.47,13.83Z" />
+        </clipPath>
+        <filter id="adnav-border-glow" x="-8%" y="-8%" width="116%" height="116%">
+         <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" /> <feColorMatrix in="blur" type="matrix" values="1 0.6 0 0 0  0.6 0.3 0 0 0  0 0 0 0 0  0 0 0 1.8 0" result="amber" />
+         <feMerge>
+          <feMergeNode in="amber" />
+          <feMergeNode in="SourceGraphic" />
+         </feMerge>
+        </filter>
+       </defs>
+       <!-- Dark backdrop -->
+       <rect x="0" y="0" width="564.09" height="406.8" fill="#001219" fill-opacity="0.36" clip-path="url(#adnav-clip)" /> <!-- Header -->
+       <g class="adnav-block adnav-block-0">
+        <rect class="adnav-hl adnav-hl-0" x="2" y="8" width="524" height="50" fill="#EE9B00" clip-path="url(#adnav-clip)" /> <text x="30" y="42" font-family="'Funnel Display', sans-serif" font-size="32" fill="#EE9B00" letter-spacing="1" data-i18n="ad.nav.title">[ · DISCIPLINES · ]</text>
+       </g>
+       <line x1="14" y1="54" x2="530" y2="54" stroke="#EE9B00" stroke-width="1" opacity="0.35" /> <!-- Category rows — the hl rect doubles as the full-band hit area -->
+       <g class="adnav-cat adnav-block adnav-block-1" data-discipline="identity" role="button" tabindex="0" aria-label="Show identity projects">
+        <rect class="adnav-hl adnav-hl-1" x="2" y="62" width="524" height="62" fill="#EE9B00" clip-path="url(#adnav-clip)" /> <text class="adnav-label" data-content="· 01 · IDENTITY" data-i18n="ad.nav.label.identity" x="30" y="88" font-family="'Funnel Display', sans-serif" font-size="30" fill="#EE9B00">· 01 · IDENTITY</text> <text class="adnav-sub" data-i18n="ad.nav.sub.identity" x="30" y="110" font-family="'Funnel Display', sans-serif" font-size="22" fill="#EE9B00" opacity="0.55">logos · brand systems · stationery</text>
+       </g>
+       <g class="adnav-cat adnav-block adnav-block-2" data-discipline="web" role="button" tabindex="0" aria-label="Show web projects">
+        <rect class="adnav-hl adnav-hl-2" x="2" y="126" width="524" height="58" fill="#EE9B00" clip-path="url(#adnav-clip)" /> <text class="adnav-label" data-content="· 02 · WEB" data-i18n="ad.nav.label.web" x="30" y="148" font-family="'Funnel Display', sans-serif" font-size="30" fill="#EE9B00">· 02 · WEB</text> <text class="adnav-sub" data-i18n="ad.nav.sub.web" x="30" y="170" font-family="'Funnel Display', sans-serif" font-size="22" fill="#EE9B00" opacity="0.55">landings · virtual events · ux/ui</text>
+       </g>
+       <g class="adnav-cat adnav-block adnav-block-3" data-discipline="editorial" role="button" tabindex="0" aria-label="Show editorial projects">
+        <rect class="adnav-hl adnav-hl-3" x="2" y="186" width="524" height="58" fill="#EE9B00" clip-path="url(#adnav-clip)" /> <text class="adnav-label" data-content="· 03 · EDITORIAL" data-i18n="ad.nav.label.editorial" x="30" y="208" font-family="'Funnel Display', sans-serif" font-size="30" fill="#EE9B00">· 03 · EDITORIAL</text> <text class="adnav-sub" data-i18n="ad.nav.sub.editorial" x="30" y="230" font-family="'Funnel Display', sans-serif" font-size="22" fill="#EE9B00" opacity="0.55">catalogs · print · large format</text>
+       </g>
+       <g class="adnav-cat adnav-block adnav-block-4" data-discipline="3d" role="button" tabindex="0" aria-label="Show 3D projects">
+        <rect class="adnav-hl adnav-hl-4" x="2" y="246" width="524" height="58" fill="#EE9B00" clip-path="url(#adnav-clip)" /> <text class="adnav-label" data-content="· 04 · 3D &amp; MOTION" data-i18n="ad.nav.label.3d" x="30" y="268" font-family="'Funnel Display', sans-serif" font-size="30" fill="#EE9B00">· 04 · 3D &amp; MOTION</text> <text class="adnav-sub" data-i18n="ad.nav.sub.3d" x="30" y="290" font-family="'Funnel Display', sans-serif" font-size="22" fill="#EE9B00" opacity="0.55">characters · interactive models</text>
+       </g>
+       <!-- Bottom divider + footer -->
+       <line x1="14" y1="316" x2="530" y2="316" stroke="#EE9B00" stroke-width="1" opacity="0.35" /> <text x="30" y="354" font-family="'Funnel Display', sans-serif" font-size="22" fill="#EE9B00" opacity="0.7" data-i18n="ad.nav.hint">· click a category to load projects ·</text> <!-- Border with glow + accents -->
+       <path d="M10.47,239.39c0,36.11,0,72.21,0,108.12,0,7.59-9.47,14.36-9.47,21.95v25.23s529.07,0,529.07,0l15.34-16-.13-.21V1c-177.56,0-355.11,0-532.67,0L1,21.32v204.24l9.47,13.83Z" fill="none" stroke="#EE9B00" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" filter="url(#adnav-border-glow)" /> <polygon points="158.13 394.69 169.28 406.8 365.68 406.8 378.21 394.69 158.13 394.69" fill="#EE9B00" /> <polygon points="545.41 162.3 564.09 149.42 564.09 16.17 545.28 1 545.41 162.3" fill="#EE9B00" />
+      </svg>
+     </nav>
+     <!-- Project detail modal — fixed overlay, populated by ArtWorksPanel -->
+     <div class="ad-project-modal" role="dialog" aria-modal="true" aria-label="Project details" aria-hidden="true">
+      <div class="ad-pm-backdrop"></div>
+      <div class="ad-pm-frame">
+       <div class="ad-pm-bg"></div>
+       <div class="ad-pm-gradient"></div>
+       <div class="ad-pm-scanlines"></div>
+       <!-- Decorative cyber frame — red variant of the intro frame, overlays content -->
+       <svg class="ad-pm-deco" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950.9 632.7" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+         <clipPath id="adpmf-clip">
+          <rect class="adpmf-0" x="36.4" y="42.6" width="79.2" height="20.3" />
+         </clipPath>
+        </defs>
+        <g>
+         <path class="adpmf-6" d="M60.6,606.3h866.5V33.1l-36.6-12.5c-248.6-.9-461.3,0-461.3,0l-49.1,10.2h-248.3l-50.5-10.2H23.7v569.2l36.9,16.5h0Z" /> <polygon class="adpmf-7" points="927.1 606.3 936.9 597.7 936.9 506.5 927.9 497.4 927.1 606.3" /> <rect class="adpmf-7" x="735.3" y="39.3" width="191.9" height="8.8" /> <rect class="adpmf-7" x="735.3" y="57.1" width="191.9" height="8.8" /> <line class="adpmf-2" x1="17.5" y1="25" x2="17.5" y2="582.9" /> <line class="adpmf-2" x1="28.5" y1="42.3" x2="28.5" y2="43.1" /> <line class="adpmf-1" x1="28.5" y1="51.3" x2="28.5" y2="66.8" /> <line id="adpmf-line" class="adpmf-3" x1="28.5" y1="70.9" x2="28.5" y2="595.3" /> <line class="adpmf-2" x1="28.5" y1="296.8" x2="36.4" y2="296.8" /> <line class="adpmf-2" x1="28.5" y1="355.4" x2="36.4" y2="355.4" /> <line class="adpmf-2" x1="28.5" y1="238.2" x2="36.4" y2="238.2" /> <line class="adpmf-2" x1="893.7" y1="538" x2="920.3" y2="538" /> <line class="adpmf-2" x1="893.7" y1="534" x2="920.3" y2="534" /> <line class="adpmf-2" x1="893.7" y1="530" x2="920.3" y2="530" /> <line class="adpmf-2" x1="914.3" y1="52.7" x2="922.1" y2="52.7" /> <line class="adpmf-2" x1="65.8" y1="602.5" x2="74.7" y2="602.5" /> <line class="adpmf-2" x1="65.8" y1="596.1" x2="74.7" y2="596.1" /> <line class="adpmf-2" x1="65.8" y1="589.6" x2="74.7" y2="589.6" />
+         <g id="adpmf-binary" class="adpmf-4">
+          <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 546.3) scale(2.3 1)"><tspan x="0" y="0">01000010</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 553.1) scale(2.3 1)"><tspan x="0" y="0">01110010</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 559.9) scale(2.3 1)"><tspan x="0" y="0">01100001</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 566.6) scale(2.3 1)"><tspan x="0" y="0">01101110</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 573.4) scale(2.3 1)"><tspan x="0" y="0">01100100</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 580.2) scale(2.3 1)"><tspan x="0" y="0">00100000</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 587) scale(2.3 1)"><tspan x="0" y="0">01000100</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 593.8) scale(2.3 1)"><tspan x="0" y="0">01001110</tspan></text></g> <g class="adpmf-4"><text class="adpmf-5" transform="translate(860 600.6) scale(2.3 1)"><tspan x="0" y="0">01000001</tspan></text></g>
+         </g>
+         <polygon class="adpmf-7" points="909.1 69.6 922.1 69.6 922.1 82.6 909.1 69.6" />
+         <g id="adpmf-hatch">
+          <g class="adpmf-8">
+           <g>
+            <rect class="adpmf-7" x="97.2" y="49" width="38" height="7.4" transform="translate(-3.2 97.6) rotate(-45)" /> <rect class="adpmf-7" x="81" y="49.1" width="38" height="7.4" transform="translate(-8 86.1) rotate(-45)" /> <rect class="adpmf-7" x="65.1" y="49" width="38" height="7.4" transform="translate(-12.6 74.9) rotate(-45)" /> <rect class="adpmf-7" x="48.9" y="49.1" width="38" height="7.4" transform="translate(-17.4 63.4) rotate(-45)" /> <rect class="adpmf-7" x="33" y="49" width="38" height="7.4" transform="translate(-22 52.2) rotate(-45)" /> <rect class="adpmf-7" x="16.9" y="49" width="38" height="7.4" transform="translate(-26.7 40.8) rotate(-45)" />
+           </g>
+          </g>
+         </g>
+         <rect class="adpmf-2" x="36.4" y="42.6" width="79.2" height="20.3" />
+        </g>
+       </svg>
+       <!-- Image stage — active gallery image, uncropped, inside the deco frame -->
+       <div class="ad-pm-stage">
+        <img class="ad-pm-stage-img" src="" alt="" decoding="async"> <!-- Missing-image fallback: shown when the stage <img> fails to load
+                             (JS toggles .ad-pm-stage.has-void). Cyberpunk black-hole void. -->
+        <div class="ad-pm-void" aria-hidden="true">
+         <div class="ad-pm-void-hole">
+          <span class="ad-pm-void-disk"></span> <span class="ad-pm-void-disk ad-pm-void-disk--b"></span> <span class="ad-pm-void-core"></span> <span class="ad-pm-void-lens"></span>
+         </div>
+         <div class="ad-pm-void-text">
+          <span class="ad-pm-void-glitch" data-i18n="ad.void.line1">THE FILE WAS EATEN BY A BLACK HOLE</span> <span class="ad-pm-void-code" data-i18n="ad.void.line2">· SIGNAL LOST · ERR 404 ·</span>
+         </div>
+        </div>
+       </div>
+       <div class="ad-pm-content">
+        <div class="ad-pm-text">
+         <span class="ad-pm-num"></span> <span class="ad-pm-cat"></span>
+         <h2 class="ad-pm-title"></h2>
+         <p class="ad-pm-sub"></p>
+         <p class="ad-pm-desc"></p>
+         <div class="ad-pm-specs"></div>
+         <div class="ad-pm-tags"></div>
+        </div>
+        <div class="ad-pm-thumbs" role="list" aria-label="Project images"></div>
+       </div>
+       <button class="ad-pm-close" aria-label="Close project">[ · X · ]</button>
+      </div>
+     </div>
+     <!-- Floating row preview — cursor-following thumbnail, position:fixed escapes overflow:hidden -->
+     <div class="ad-row-preview" id="adRowPreview" aria-hidden="true">
+      <div class="ad-row-preview-border"></div>
+     </div>
+    </section>
+    <section id="photo" aria-label="Photography Portfolio">
+     <canvas class="photo-static-line"></canvas>
+     <!-- Left-edge bar — fixed within the section, never scrolls -->
+     <img loading="lazy" decoding="async" class="photo-section-bar-img" src="images/photo-section-bar.svg" alt="" role="presentation" aria-hidden="true" draggable="false"> <!-- Portfolio overlay — text + accordion, scroll together, z:2 -->
+     <div class="photo-portfolio-overlay">
+      <div class="photo-content-scroll">
+       <div class="photo-top-grid">
+        <!-- Left: cta + accordion categories -->
+        <div class="photo-col-left">
+         <p class="photo-cta photo-cta--left"><span class="photo-ai-highlight" data-i18n="photo.ui.cta">Click a category to expand its list, then select any title to preview the image.</span></p>
+         <div class="photo-accordion">
+          {% for cat in photo_categories %}
+          <div class="photo-accordion-item">
+           <button class="photo-category-btn" data-category="{{ cat.slug }}" aria-expanded="false"><span class="photo-btn-label" data-i18n="{{ cat.label_i18n }}">{{ cat.label_default | default('· ' + cat.slug + ' ·') }}</span> <span class="photo-btn-indicator" aria-hidden="true"></span></button>
+           <ul class="photo-project-list" data-category="{{ cat.slug }}" role="list">
+            {% for item in cat.photos %}
+            <li class="photo-project-item" data-image="{{ item.image }}"><span class="photo-project-data photo-title hover-text" data-i18n="{{ item.title.i18n }}">{{ item.title.default }}</span> <span class="photo-project-data photo-location hover-text" data-i18n="{{ item.location.i18n }}">{{ item.location.default }}</span> <span class="photo-project-data photo-camera hover-text">{{ item.camera }}</span> <span class="photo-project-data photo-lens hover-text">{{ item.lens }}</span> <span class="photo-project-data photo-year hover-text">{{ item.year }}</span></li>
+            {% endfor %}
+           </ul>
+          </div>
+          {% endfor %}
+          <div class="accordion-electric-border" aria-hidden="true"></div>
+         </div>
+         <img loading="lazy" decoding="async" class="photo-col-bar1" src="images/bar1.svg" alt="" role="presentation" aria-hidden="true" draggable="false">
+         <p class="photo-polaroids-label" data-i18n="photo.ui.polaroids">[ · p o l a r o i d s · ]</p>
+         <p class="photo-polaroids-desc" data-i18n="photo.ui.polaroidsDesc">A growing collection of travel polaroids. Each polaroid here is a travel photograph pulled from years of work across landscapes, cities, and encounters worldwide. When the archive reaches 100 photographs, the full collection is printed as a limited edition photobook.</p>
+         <div class="pgallery-info" role="group" aria-label="Polaroid stream controls">
+          <svg class="pgallery-info-svg" viewBox="0 0 800 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+           <defs>
+            <clipPath id="pginfo-clip">
+             <path d="M1,18 L18,1 L799,1 L799,82 L782,99 L1,99 Z" />
+            </clipPath>
+           </defs>
+           <rect x="0" y="0" width="800" height="100" fill="#BB3E03" fill-opacity="0.13" clip-path="url(#pginfo-clip)" /> <path d="M1,18 L18,1 L799,1 L799,82 L782,99 L1,99 Z" fill="none" stroke="#BB3E03" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" /> <polygon points="782,1 800,1 800,40 782,30" fill="#BB3E03" /> <polygon points="308,93 320,100 480,100 492,93 308,93" fill="#BB3E03" /> <line x1="14" y1="50" x2="786" y2="50" stroke="#BB3E03" stroke-width="1" opacity="0.35" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="pgallery-info-content">
+           <span class="pgallery-info-left" role="button" tabindex="0" aria-label="Reverse polaroid stream"> <!-- [ <<< ] — same bracketed-chevron arrow as the right button,
+                                         mirrored via CSS (scaleX(-1)) to point left. --> 
+            <svg class="pgnav-arrow" viewBox="0 0 120 50" fill="none" aria-hidden="true">
+             <polyline class="pgnav-bracket" points="16 8 8 8 8 42 16 42" /> <polyline class="pgnav-bracket" points="104 8 112 8 112 42 104 42" /> <polyline class="pgnav-chev pgnav-chev-0" points="34 14 46 25 34 36" /> <polyline class="pgnav-chev pgnav-chev-1" points="52 14 64 25 52 36" /> <polyline class="pgnav-chev pgnav-chev-2" points="70 14 82 25 70 36" />
+            </svg> </span>
+           <div class="pgallery-info-text">
+            <span class="pgallery-info-sub" data-i18n="photo.ui.infoSub">use the arrows [&lt;&lt;&lt;] [&gt;&gt;&gt;] to navigate the photos · click the one you like to full view</span>
+           </div>
+           <span class="pgallery-info-right" role="button" tabindex="0" aria-label="Play polaroid stream forward"> <!-- [ >>> ] — horizontal bracketed-chevron arrow (about / art-
+                                         direction style, rotated) pointing right. --> 
+            <svg class="pgnav-arrow" viewBox="0 0 120 50" fill="none" aria-hidden="true">
+             <polyline class="pgnav-bracket" points="16 8 8 8 8 42 16 42" /> <polyline class="pgnav-bracket" points="104 8 112 8 112 42 104 42" /> <polyline class="pgnav-chev pgnav-chev-0" points="34 14 46 25 34 36" /> <polyline class="pgnav-chev pgnav-chev-1" points="52 14 64 25 52 36" /> <polyline class="pgnav-chev pgnav-chev-2" points="70 14 82 25 70 36" />
+            </svg> </span>
+          </div>
+          <!-- Down cue — sits inside the panel near its bottom edge, points at
+                                 the polaroid carousel (.photo-ghost-stream) further down the column. -->
+          <div class="pgallery-down-cue" aria-hidden="true">
+           <svg viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="12" y1="1" x2="12" y2="9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /> <polyline points="5,7 12,14 19,7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+           </svg>
+          </div>
+         </div>
+         <img loading="lazy" decoding="async" src="images/polaroid camera.webp" alt="Polaroid camera" class="photo-polaroids-camera" draggable="false" aria-hidden="true">
+         <div class="photo-ghost-stream" aria-hidden="true">
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+          <div class="photo-ghost-card"></div>
+         </div>
+        </div>
+        <!-- Right: polaroid unit + editorial text -->
+        <div class="photo-col-camera">
+         <div class="photo-polaroid-unit">
+          <div class="photo-polaroid-frame">
+           <div class="photo-polaroid-reveal">
+            <img class="photo-polaroid-photo" id="polaroidPhoto" alt="" draggable="false">
+            <canvas class="photo-polaroid-canvas" id="polaroidCanvas"></canvas>
+           </div>
+           <div class="photo-polaroid-caption">
+            <span class="photo-polaroid-name" id="polaroidName"></span> <span class="photo-polaroid-section" id="polaroidSection"></span>
+           </div>
+           <div class="photo-polaroid-border"></div>
+          </div>
+          <div class="photo-polaroid-hint" aria-hidden="true">
+           <svg id="photo-reveal-guide" class="photo-hint-svg" viewBox="0 0 290 300" xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <defs>
+             <clipPath id="phint-clip">
+              <path d="M1,15 L14,1 L276,1 L289,14 L289,286 L276,299 L14,299 L1,286 Z" />
+             </clipPath>
+            </defs>
+            <!-- Dark backdrop -->
+            <rect x="0" y="0" width="290" height="300" fill="#001219" fill-opacity="0.15" clip-path="url(#phint-clip)" /> <!-- Scan lines -->
+            <line x1="14" y1="44" x2="276" y2="44" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="64" x2="276" y2="64" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="84" x2="276" y2="84" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="104" x2="276" y2="104" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="124" x2="276" y2="124" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="144" x2="276" y2="144" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="164" x2="276" y2="164" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="184" x2="276" y2="184" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="204" x2="276" y2="204" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="224" x2="276" y2="224" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="244" x2="276" y2="244" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <line x1="14" y1="264" x2="276" y2="264" stroke="#AE2012" stroke-width="0.5" opacity="0.09" /> <!-- Main border — all 4 corners chamfered -->
+            <path d="M1,15 L14,1 L276,1 L289,14 L289,286 L276,299 L14,299 L1,286 Z" fill="none" stroke="#AE2012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <!-- Corner fills -->
+            <polygon points="1,1 14,1 1,15" fill="#AE2012" /> <polygon points="276,1 289,1 289,14" fill="#AE2012" /> <polygon points="289,286 289,299 276,299" fill="#AE2012" /> <polygon points="1,286 14,299 1,299" fill="#AE2012" /> <!-- Header bar -->
+            <line x1="14" y1="22" x2="276" y2="22" stroke="#AE2012" stroke-width="1" opacity="0.7" /> <!-- LED status squares -->
+            <rect x="18" y="9" width="5" height="5" fill="#AE2012" /> <rect x="27" y="9" width="5" height="5" fill="#AE2012" opacity="0.5" /> <rect x="36" y="9" width="5" height="5" fill="#AE2012" opacity="0.2" /> <!-- Header label -->
+            <text x="50" y="17" font-family="'Funnel Display', sans-serif" font-size="14" fill="#AE2012" opacity="0.65">· REVEAL·SYS ·</text> <!-- Left track -->
+            <line x1="8" y1="24" x2="8" y2="276" stroke="#AE2012" stroke-width="1" opacity="0.3" /> <circle cx="8" cy="60" r="2.5" fill="none" stroke="#AE2012" stroke-width="1" opacity="0.45" /> <circle cx="8" cy="150" r="2.5" fill="#AE2012" opacity="0.75" /> <circle cx="8" cy="240" r="2.5" fill="none" stroke="#AE2012" stroke-width="1" opacity="0.45" /> <!-- Right bracket + tick marks -->
+            <path d="M278,35 L285,35 L285,265 L278,265" fill="none" stroke="#AE2012" stroke-width="1" opacity="0.35" /> <line x1="282" y1="90" x2="285" y2="90" stroke="#AE2012" stroke-width="1" opacity="0.5" /> <line x1="282" y1="150" x2="285" y2="150" stroke="#AE2012" stroke-width="1" opacity="0.5" /> <line x1="282" y1="210" x2="285" y2="210" stroke="#AE2012" stroke-width="1" opacity="0.5" /> <!-- Left arrow cue — points back at the polaroid, aligned with
+                                         the middle (REVEAL) line of the stack. -->
+            <polygon points="26,156 38,144 38,151 44,151 44,161 38,161 38,168" fill="#001219" /> <!-- Stacked HUD prompt: big spaced verbs/noun (HOVER / REVEAL /
+                                         PHOTO) with small connectors (to / the), wrapped in [ · · ].
+                                         Per-word styling can't ride the 2 i18n keys, so this is a fixed
+                                         English layout — treated as HUD chrome like · REVEAL·SYS ·. -->
+            <text x="78" y="90" font-family="'Funnel Display', sans-serif" font-size="24" font-weight="bold" fill="#001219">[ · H O V E R</text> <text x="112" y="124" font-family="'Funnel Display', sans-serif" font-size="24" font-weight="bold" fill="#001219">T O</text> <text x="78" y="158" font-family="'Funnel Display', sans-serif" font-size="24" font-weight="bold" fill="#001219">R E V E A L</text> <text x="112" y="192" font-family="'Funnel Display', sans-serif" font-size="24" font-weight="bold" fill="#001219">T H E</text> <text x="78" y="226" font-family="'Funnel Display', sans-serif" font-size="24" font-weight="bold" fill="#001219">P H O T O · ]</text> <!-- Bottom bar -->
+            <line x1="14" y1="278" x2="276" y2="278" stroke="#AE2012" stroke-width="1" opacity="0.7" /> <text x="18" y="291" font-family="'Funnel Display', sans-serif" font-size="8" fill="#AE2012" opacity="0.55">· img.reveal // v0.1 ·</text>
+           </svg>
+          </div>
+         </div>
+         <p class="photo-intro" data-i18n-html="photo.intro">Photography has been part of my professional and personal work for years, from commercial and editorial projects to street and travel work across four continents. It is one of my passions, a discipline where composition translates into visually pleasing images. <em>Every photo in this archive carries <span class="photo-ai-highlight"><strong><em>AI-generated metadata</em></strong></span>, making the portfolio fully searchable by people, search engines, and AI systems alike.</em></p>
+         <aside class="photo-col-instagram" aria-label="Nikolay Photography on Instagram">
+          <div class="photo-ig-header">
+           <ul class="social-media-icons about-social-icons" aria-label="Instagram">
+            <li><a class="instagram" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Nikolay on Instagram"> <span></span> <span></span> <span></span> <span></span> 
+              <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+               <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+              </svg> </a></li>
+           </ul>
+           <span class="photo-ig-label" aria-hidden="true" data-i18n="photo.ig.label">· i n s t a g r a m ·</span>
+          </div>
+          <a href="https://www.instagram.com/" class="photo-ig-handle" target="_blank" rel="noopener noreferrer" aria-label="Nikolay on Instagram"></a>
+          <p class="photo-ig-desc" data-i18n="photo.ig.desc">Want to see more? I post regularly on Instagram: more variety, more places, less structure. Everything that doesn't fit in a portfolio but is still worth sharing.</p>
+          <a href="https://www.instagram.com/" class="photo-ig-link" target="_blank" rel="noopener noreferrer" aria-label="Follow Nikolay on Instagram"> 
+           <svg class="photo-ig-icon" viewBox="0 0 448 512" aria-hidden="true">
+            <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+           </svg> 
+           <span class="photo-ig-cta" data-i18n="photo.ig.cta">· f o l l o w ·</span> 
+          </a>
+         </aside>
+        </div>
+       </div>
+      </div>
+      <!-- Background hover image — z:1 inside overlay, sits above text (z:0) but below accordion (z:2) -->
+      <div class="photo-bg-image" id="photoBgImage" aria-hidden="true">
+       <div class="photo-bg-border" aria-hidden="true"></div>
+      </div>
+      <div class="photo-enlarge-label" id="photoEnlargeLabel" aria-hidden="true">
+       <span class="photo-enlarge-text">· click to enlarge ·</span>
+      </div>
+     </div>
+     <div class="scanlines" aria-hidden="true"></div>
+     <div class="vhs-static" aria-hidden="true"></div>
+    </section>
+    <div class="photo-scroll-spacer"></div>
+   </div>
+   <!-- /.ad-pin-wrap -->
+   <section id="illustration" aria-label="Illustration Portfolio — Fantasy Concept Art and Dark Fantasy Digital Illustration by Nikolay">
+    <!-- SEO/AI-crawlable artwork index — visually hidden, semantically rich -->
+    <div class="sr-only" aria-hidden="false">
+     <h2>Illustration Portfolio</h2>
+     <p>Digital illustration portfolio by Nikolay. Fantasy concept art, dark fantasy illustration, D&amp;D fan art, and character concept art created in Procreate.</p>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/themberchaud-dnd-dragon-concept-art-640.webp 640w, images/illustration/themberchaud-dnd-dragon-concept-art-1280.webp 1280w, images/illustration/themberchaud-dnd-dragon-concept-art.webp 2036w" sizes="100vw" src="images/illustration/themberchaud-dnd-dragon-concept-art.webp" alt="Themberchaud the red dragon lying furiously on a pile of gold — D&amp;D dark fantasy concept art by Nikolay, 2025. Gothic lettering below reads Themberchaud. Inspired by Alexander Ostrowski's character design work." itemprop="image" width="1920" height="1080" loading="lazy" decoding="async">
+      <figcaption itemprop="name">The Fat Dragon — Themberchaud Concept Art</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2025">
+      <meta itemprop="artMedium" content="Procreate">
+      <meta itemprop="genre" content="Fantasy concept art">
+      <meta itemprop="keywords" content="Themberchaud, D&amp;D concept art, red dragon, Gracklstugh, dark fantasy, character concept art, digital painting, Procreate">
+      <meta itemprop="copyrightYear" content="2025">
+      <meta itemprop="creditText" content="© 2025 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/hada-de-los-andes-andean-fairy-illustration-2024-640.webp 640w, images/illustration/hada-de-los-andes-andean-fairy-illustration-2024-1280.webp 1280w, images/illustration/hada-de-los-andes-andean-fairy-illustration-2024.webp 3000w" sizes="100vw" src="images/illustration/hada-de-los-andes-andean-fairy-illustration-2024.webp" alt="Andean fairy with dark skin and white hair, wearing Inca-inspired aguayo textiles and a geometric hat, carrying a golden tumi, with South American owl butterfly wings — fantasy character concept art by Nikolay, 2024." itemprop="image" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Andean Fairy — What If Fairies Were Born in the Andes?</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2024">
+      <meta itemprop="artMedium" content="Procreate">
+      <meta itemprop="genre" content="Fantasy character concept art">
+      <meta itemprop="keywords" content="Andean fairy, Inca fairy, Latin American fantasy, South American mythology, tumi, aguayo, owl butterfly wings, hada de los andes, decolonized fantasy, character concept art, Procreate, digital painting">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/meninas/meninas-canido-tarot-illustration-ferrol-2024-640.webp 640w, images/illustration/meninas/meninas-canido-tarot-illustration-ferrol-2024.webp 963w" sizes="100vw" src="images/illustration/meninas/meninas-canido-tarot-illustration-ferrol-2024.webp" alt="Baroque border collie figure styled as a tarot major arcana card — official proposal for the Meninas de Canido street art festival in Ferrol, Galicia. Hypnotic black-and-white spiral background with golden Galician architecture. Digital illustration by Nikolay, 2024." itemprop="image" loading="lazy" decoding="async">
+      <figcaption itemprop="name">What If Las Meninas Were a Tarot Card? — Meninas de Canido 2024</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2024">
+      <meta itemprop="artMedium" content="Procreate">
+      <meta itemprop="genre" content="Fantasy illustration">
+      <meta itemprop="keywords" content="Meninas de Canido, Canido festival, Ferrol, Galicia, Las Meninas reimagined, tarot card illustration, baroque border collie character, Velázquez fan art, Procreate, digital painting, street art festival proposal">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/rocker-ghost-geisha-yurei-illustration-2024-640.webp 640w, images/illustration/rocker-ghost-geisha-yurei-illustration-2024-1280.webp 1280w, images/illustration/rocker-ghost-geisha-yurei-illustration-2024.webp 3000w" sizes="100vw" src="images/illustration/rocker-ghost-geisha-yurei-illustration-2024.webp" alt="A Japanese yūrei ghost in a purple-and-gold kimono playing a Gibson Les Paul sunburst guitar against a red rising-sun circle, skull hair ornament, Noh-mask face — fantasy character concept art by Nikolay, 2024." itemprop="image" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Rocker Ghost Geisha — When a Japanese Yūrei Picks Up a Les Paul</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2024-03">
+      <meta itemprop="artMedium" content="Procreate">
+      <meta itemprop="genre" content="Fantasy character concept art">
+      <meta itemprop="keywords" content="rocker ghost geisha, yūrei rock star, Japanese ghost illustration, geisha concept art, Les Paul guitar art, visual kei, Noh mask, ukiyo-e inspired, Japanese mythology fantasy, Procreate, digital painting">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/mujer-crustaceo-surrealist-mixed-media-2014-640.webp 640w, images/illustration/mujer-crustaceo-surrealist-mixed-media-2014-1280.webp 1280w, images/illustration/mujer-crustaceo-surrealist-mixed-media-2014.webp 5315w" sizes="100vw" src="images/illustration/mujer-crustaceo-surrealist-mixed-media-2014.webp" alt="A surrealist illustration of a woman whose body merges with a crustacean exoskeleton — detailed watercolour and ink on a light blue ground, exploring transformation and biological identity. By Nikolay, 2014." itemprop="image" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Mujer Crustáceo — A Surrealist Study in Transformation</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2014">
+      <meta itemprop="artMedium" content="Watercolour and ink">
+      <meta itemprop="genre" content="Surrealist illustration">
+      <meta itemprop="keywords" content="Mujer Crustáceo, surrealist illustration, watercolour ink, mixed media, human crustacean, body transformation, surrealism, biological identity, Nikolay, 2014, Colombia">
+      <meta itemprop="copyrightYear" content="2014">
+      <meta itemprop="creditText" content="© 2014 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img src="images/illustration/faber castell/reconciliacion-watercolor-digital-2014.webp" alt="A pink-haired woman and a skeletal masked figure face each other in a tender confrontation — watercolour and digital mixed media illustration with chrysanthemums, ink splashes, and geometric shapes, by Nikolay, May 2014." itemprop="image" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Reconciliación — Between the Living and the Lost</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2014-05">
+      <meta itemprop="artMedium" content="Watercolour and digital finishing">
+      <meta itemprop="genre" content="Surrealist mixed media illustration">
+      <meta itemprop="keywords" content="Reconciliación, watercolour illustration, mixed media, skull mask, pink hair, chrysanthemum, life and death, surrealist illustration, Nikolay, 2014, Colombia">
+      <meta itemprop="copyrightYear" content="2014">
+      <meta itemprop="creditText" content="© 2014 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/draconic love/draconic-love-dragon-illustration-2019-640.webp 640w, images/illustration/draconic love/draconic-love-dragon-illustration-2019.webp 1200w" sizes="100vw" src="images/illustration/draconic love/draconic-love-dragon-illustration-2019.webp" alt="Two stylized dragons — one blue, one red — curl together to form a heart around bold hand-lettered typography. Commercial illustration for branded merchandise by Nikolay, 2019." itemprop="image" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Draconic Love — Commercial Dragon Illustration &amp; Merchandise Design</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2019">
+      <meta itemprop="artMedium" content="Digital illustration — Adobe Photoshop and Illustrator">
+      <meta itemprop="genre" content="Fantasy character illustration and merchandise design">
+      <meta itemprop="keywords" content="Draconic Love, dragon illustration, fantasy art, merchandise design, commercial illustration, hand lettering, apparel design, Nikolay, 2019, Colombia">
+      <meta itemprop="copyrightYear" content="2019">
+      <meta itemprop="creditText" content="© 2019 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/colibri-hummingbird-surrealist-mixed-media-2024-640.webp 640w, images/illustration/colibri-hummingbird-surrealist-mixed-media-2024-1280.webp 1280w, images/illustration/colibri-hummingbird-surrealist-mixed-media-2024.webp 3296w" sizes="100vw" src="images/illustration/colibri-hummingbird-surrealist-mixed-media-2024.webp" alt="A hummingbird dissolved into pure ornament: iridescent blue feather waves, cascades of pink plumes, staring spiral eyes, teal peacock quills and golden flames over a stormy watercolour sky, bound together with copper leaf. Mixed media illustration by Nikolay, 2024." itemprop="image" width="3296" height="2544" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Colibrí Lisérgico — A Psychedelic Hummingbird</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2024">
+      <meta itemprop="artMedium" content="Watercolour, ink, gouache and copper leaf on paper">
+      <meta itemprop="genre" content="Surrealist illustration">
+      <meta itemprop="keywords" content="colibrí, hummingbird illustration, psychedelic bird art, surrealist illustration, mixed media, watercolour and ink, copper leaf, feather ornament, traditional illustration, Nikolay, 2024">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/illustration-muse-mixed-media-2024-640.webp 640w, images/illustration/illustration-muse-mixed-media-2024-1280.webp 1280w, images/illustration/illustration-muse-mixed-media-2024.webp 2544w" sizes="100vw" src="images/illustration/illustration-muse-mixed-media-2024.webp" alt="A six-armed muse in crimson robes floats cross-legged before a copper-etched crimson sun, holding a pencil, paintbrush, airbrush, camera, smartphone and a Les Paul guitar, with hand-lettered ILLUSTRATION below. Mixed media illustration by Nikolay, 2024." itemprop="image" width="2544" height="3296" loading="lazy" decoding="async">
+      <figcaption itemprop="name">The Illustration Muse — Six-Armed Deity of the Crafts</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2024">
+      <meta itemprop="artMedium" content="Watercolour, ink, gouache and copper leaf on paper">
+      <meta itemprop="genre" content="Mixed media cover illustration">
+      <meta itemprop="keywords" content="illustration muse, six-armed deity, creative muse, mixed media illustration, watercolour and ink, copper leaf, hand lettering, portfolio cover art, traditional illustration, Nikolay, 2024">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/photography-fujifilm-camera-mixed-media-2024-640.webp 640w, images/illustration/photography-fujifilm-camera-mixed-media-2024-1280.webp 1280w, images/illustration/photography-fujifilm-camera-mixed-media-2024.webp 2544w" sizes="100vw" src="images/illustration/photography-fujifilm-camera-mixed-media-2024.webp" alt="A Fujifilm X-T mirrorless camera in a brown leather half-case erupts through splashes of white paint on a pink gouache ground, crossed by a copper-leaf plant stem, with a hand-lettered PHOTOGRAPHY banner. Mixed media illustration by Nikolay, 2024." itemprop="image" width="2544" height="3296" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Photography — Portrait of a Fujifilm X-T Camera</figcaption>
+      <meta itemprop="creator" content="ni">
+      <meta itemprop="dateCreated" content="2024">
+      <meta itemprop="artMedium" content="Watercolour, gouache and copper leaf on paper">
+      <meta itemprop="genre" content="Mixed media cover illustration">
+      <meta itemprop="keywords" content="Fujifilm X-T camera, camera illustration, photography cover art, mixed media illustration, watercolour gouache, copper leaf, hand lettering, paint splash, traditional illustration, Nikolay, 2024">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/illustration/web-design-cyborg-mixed-media-2024-640.webp 640w, images/illustration/web-design-cyborg-mixed-media-2024-1280.webp 1280w, images/illustration/web-design-cyborg-mixed-media-2024.webp 2544w" sizes="100vw" src="images/illustration/web-design-cyborg-mixed-media-2024.webp" alt="A white cyborg woman with a vintage computer monitor for a head stands over a cracked landscape of pink coral cells, her body drawn in clean cyan line outlined in copper leaf, with hand-lettered WEB DESIGN on green panels. Mixed media illustration by Nikolay, 2024." itemprop="image" width="2544" height="3296" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Web Design — The Machine With a Monitor Head</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2024">
+      <meta itemprop="artMedium" content="Watercolour, ink and copper leaf on paper">
+      <meta itemprop="genre" content="Mixed media cover illustration">
+      <meta itemprop="keywords" content="web design cyborg, monitor head robot, retro computer illustration, mixed media illustration, watercolour and ink, copper leaf, hand lettering, cyberpunk illustration, traditional illustration, Nikolay, 2024">
+      <meta itemprop="copyrightYear" content="2024">
+      <meta itemprop="creditText" content="© 2024 Nikolay — All rights reserved">
+     </figure>
+     <figure itemscope itemtype="https://schema.org/VisualArtwork">
+      <img srcset="images/art-direction/quindiorellanas/quindiorellanas-hugo-molly-mascot-characters-colombia-640.webp 640w, images/art-direction/quindiorellanas/quindiorellanas-hugo-molly-mascot-characters-colombia-1280.webp 1280w, images/art-direction/quindiorellanas/quindiorellanas-hugo-molly-mascot-characters-colombia.webp 2600w" sizes="100vw" src="images/art-direction/quindiorellanas/quindiorellanas-hugo-molly-mascot-characters-colombia.webp" alt="Hugo, a big wise mushroom with an orange spotted cap, and Molly, a small green mycelium sprout with a red cap, standing together and smiling. Mascot characters for the children's educational material of Quindiorellanas, an oyster mushroom farm in Quindio, Colombia. Digital character design by nik." itemprop="image" width="2600" height="2600" loading="lazy" decoding="async">
+      <figcaption itemprop="name">Hugo &amp; Molly — The Fungi Teachers of Quindiorellanas</figcaption>
+      <meta itemprop="creator" content="Nikolay">
+      <meta itemprop="dateCreated" content="2020">
+      <meta itemprop="artMedium" content="Digital illustration">
+      <meta itemprop="genre" content="Mascot character design">
+      <meta itemprop="keywords" content="Hugo and Molly, Quindiorellanas, mascot design, character design, mushroom characters, mycelium character, children's education, oyster mushrooms, orellanas, Quindio, Colombia, Nikolay">
+      <meta itemprop="copyrightYear" content="2020">
+      <meta itemprop="creditText" content="© Nikolay — All rights reserved">
+     </figure>
+    </div>
+    <div class="illus-tunnel" id="illus-tunnel">
+     <!-- Particle background canvas is injected here by particle-system.js -->
+     <!-- Left bar SVG -->
+     <img loading="lazy" decoding="async" src="images/illust.svg" class="illus-svg-bar" aria-hidden="true" role="presentation"> <!-- Scroll cue (about-section style [ ] + ▼▼▼) — revealed when the
+                     SCROLL how-to row is hovered; see css/main.css. -->
+     <div class="illus-scroll-cue" aria-hidden="true">
+      <svg class="illus-scroll-cue-arrow" viewBox="0 0 100 110" fill="none" aria-hidden="true" focusable="false">
+       <polyline class="iscue-bracket" points="22 4 10 4 10 102 22 102" /> <polyline class="iscue-bracket" points="78 4 90 4 90 102 78 102" /> <polygon class="iscue-chev iscue-chev-0" points="28 8 50 24 72 8 72 18 50 34 28 18" /> <polygon class="iscue-chev iscue-chev-1" points="28 34 50 50 72 34 72 44 50 60 28 44" /> <polygon class="iscue-chev iscue-chev-2" points="28 60 50 76 72 60 72 70 50 86 28 70" />
+      </svg>
+      <span class="illus-scroll-cue-text">[ · Scroll to explore · ]</span>
+     </div>
+     <!-- VHS / CRT overlay -->
+     <div class="scanlines" aria-hidden="true"></div>
+     <div class="vhs-static" aria-hidden="true"></div>
+     <!-- 3D Cube -->
+     <div class="illus-scene" aria-hidden="true">
+      <div class="illus-cube">
+       <div class="illus-face" data-face="top"></div>
+       <div class="illus-face" data-face="front"></div>
+       <div class="illus-face" data-face="right"></div>
+       <div class="illus-face" data-face="back"></div>
+       <div class="illus-face" data-face="left"></div>
+       <div class="illus-face" data-face="bottom"></div>
+       <!-- Electric border — one per face, rotates with cube in 3D -->
+       <div class="illus-face-elec" data-face="top" aria-hidden="true"></div>
+       <div class="illus-face-elec" data-face="front" aria-hidden="true"></div>
+       <div class="illus-face-elec" data-face="right" aria-hidden="true"></div>
+       <div class="illus-face-elec" data-face="back" aria-hidden="true"></div>
+       <div class="illus-face-elec" data-face="left" aria-hidden="true"></div>
+       <div class="illus-face-elec" data-face="bottom" aria-hidden="true"></div>
+      </div>
+     </div>
+     <!-- HUD -->
+     <div class="illus-hud" aria-hidden="true">
+      <div class="illus-hud-pct">000%</div>
+      <div class="illus-progress-bar">
+       <div class="illus-progress-fill"></div>
+      </div>
+      <div class="illus-scene-label">TIMELESS</div>
+     </div>
+     <!-- Nav dots -->
+     <div class="illus-strip illus-strip--right" role="navigation" aria-label="Illustration gallery navigation">
+      <button class="illus-dot" data-goto="0" data-label="Illustration" aria-label="Go to intro"></button>
+      <button class="illus-dot" data-goto="1" data-label="The Fat Dragon" aria-label="Go to The Fat Dragon"></button>
+      <button class="illus-dot" data-goto="2" data-label="Andean Fairy" aria-label="Go to Andean Fairy"></button>
+      <button class="illus-dot" data-goto="3" data-label="Flawless Victory" aria-label="Go to Flawless Victory"></button>
+      <button class="illus-dot" data-goto="4" data-label="Rocker Ghost Geisha" aria-label="Go to Rocker Ghost Geisha"></button>
+      <button class="illus-dot" data-goto="5" data-label="Mujer Crustáceo" aria-label="Go to Mujer Crustáceo"></button>
+      <button class="illus-dot" data-goto="6" data-label="Reconciliación" aria-label="Go to Reconciliación"></button>
+      <button class="illus-dot" data-goto="7" data-label="Draconic Love" aria-label="Go to Draconic Love"></button>
+      <button class="illus-dot" data-goto="8" data-label="Colibrí Lisérgico" aria-label="Go to Colibrí Lisérgico"></button>
+      <button class="illus-dot" data-goto="9" data-label="The Illustration Muse" aria-label="Go to The Illustration Muse"></button>
+      <button class="illus-dot" data-goto="10" data-label="Photography" aria-label="Go to Photography"></button>
+      <button class="illus-dot" data-goto="11" data-label="Web Design" aria-label="Go to Web Design"></button>
+      <button class="illus-dot" data-goto="12" data-label="Hugo &amp; Molly" aria-label="Go to Hugo and Molly"></button>
+     </div>
+     <!-- How-to info panel — vertical SVG, moves with strip/titleFloat -->
+     <svg class="illus-info-svg illus-info-svg--right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 257" aria-hidden="true" focusable="false">
+      <defs>
+      </defs>
+      <path class="ilsv-bg" d="M8,249 L192,249 L200,241 L200,8 L192,0 L8,0 L0,8 L0,241 Z" /> <path class="ilsv-frm" d="M8,249 L192,249 L200,241 L200,8 L192,0 L8,0 L0,8 L0,241 Z" /> <polygon class="ilsv-acc" points="188,0 200,0 200,12" /> <polygon class="ilsv-acc" points="0,237 12,249 0,249" /> <line id="ilsv-vline" class="ilsv-dsh" x1="14" y1="30" x2="14" y2="209" />
+      <g id="ilsv-hdr-group">
+       <text class="ilsv-hdr" x="100" y="22" text-anchor="middle" data-i18n="illus.info.header">[ · HOW TO EXPLORE · ]</text> <line class="ilsv-lne" x1="18" y1="30" x2="182" y2="30" />
+      </g>
+      <g id="ilsv-row-01">
+       <rect class="ilsv-hl-rect" x="18" y="31" width="164" height="44" rx="1" /> <text class="ilsv-num" x="22" y="43">· 01 ·</text> <text class="ilsv-act" x="22" y="57" data-i18n="illus.info.r1.act">SCROLL</text> <text class="ilsv-sub" x="22" y="70" data-i18n="illus.info.r1.sub">navigate illustrations</text> <line class="ilsv-lne" x1="18" y1="75" x2="182" y2="75" />
+      </g>
+      <g id="ilsv-row-02">
+       <rect class="ilsv-hl-rect" x="18" y="76" width="164" height="44" rx="1" /> <text class="ilsv-num" x="22" y="88">· 02 ·</text> <text class="ilsv-act" x="22" y="102" data-i18n="illus.info.r2.act">click ENTER</text> <text class="ilsv-sub" x="22" y="115" data-i18n="illus.info.r2.sub">To start the journey</text> <line class="ilsv-lne" x1="18" y1="120" x2="182" y2="120" />
+      </g>
+      <g id="ilsv-row-03">
+       <rect class="ilsv-hl-rect" x="18" y="121" width="164" height="44" rx="1" /> <text class="ilsv-num" x="22" y="133">· 03 ·</text> <text class="ilsv-act" x="22" y="147" data-i18n="illus.info.r3.act">click -BACK/NEXT</text> <text class="ilsv-sub" x="22" y="160" data-i18n="illus.info.r3.sub">To navigate the gallery</text> <line class="ilsv-lne" x1="18" y1="165" x2="182" y2="165" />
+      </g>
+      <g id="ilsv-row-04">
+       <rect class="ilsv-hl-rect" x="18" y="166" width="164" height="44" rx="1" /> <text class="ilsv-num" x="22" y="178">· 04 ·</text> <text class="ilsv-act" x="22" y="192" data-i18n="illus.info.r4.act">click THE IMAGE</text> <text class="ilsv-sub" x="22" y="205" data-i18n="illus.info.r4.sub">To expanded view</text> <line class="ilsv-lne" x1="18" y1="210" x2="182" y2="210" />
+      </g>
+      <g id="ilsv-footer">
+       <text class="ilsv-ftr" x="100" y="226" text-anchor="middle" data-i18n="illus.info.footer">· ILLUSTRATION ·</text> <line class="ilsv-lne" x1="18" y1="234" x2="36" y2="234" /> <line class="ilsv-lne" x1="164" y1="234" x2="182" y2="234" /> <line class="ilsv-lne" x1="18" y1="238" x2="32" y2="238" /> <line class="ilsv-lne" x1="168" y1="238" x2="182" y2="238" />
+      </g>
+     </svg>
+     <!-- Content sections -->
+     <div class="illus-sections">
+      <!-- 0: Intro -->
+      <div class="illus-section" data-idx="0">
+       <div class="illus-card">
+        <div class="illus-tag illus-tag--hero" data-i18n="illus.nav.hint">Personal work and commissions</div>
+        <div class="illus-h1 illus-word-art" role="heading" aria-level="2" aria-label="Illustration">
+         <span class="glitch-text" data-splitting>[ · I L</span> <span class="glitch-text illus-word-in illus-lust-accent" data-splitting>L U S T</span> <span class="glitch-text illus-word-in" data-splitting>R A T</span> <span class="glitch-text illus-word-in" data-splitting>I O N · ]</span>
+        </div>
+        <p class="illus-body"><span class="glitch-text" data-splitting data-i18n-split="illus.intro.body1">Digital, hand-drawn and</span> <span class="glitch-text" data-splitting data-i18n-split="illus.intro.body2">mixed media illustrations for editorial,</span> <span class="glitch-text" data-splitting data-i18n-split="illus.intro.body3">brand, contest, and personal projects.</span></p>
+        <div class="illus-cta-row">
+         <button class="illus-cta" data-goto="1"><span data-i18n="illus.cta.enter">Enter</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 1 — The Fat Dragon / Themberchaud -->
+      <div class="illus-section" data-idx="1">
+       <div class="illus-card illus-card--right">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2025</div>
+        <h3 class="illus-piece-title" data-i18n="illus.themberchaud.title">The Fat Dragon — Themberchaud Concept Art</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.digital">DIGITAL</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.themberchaud.body">A fan concept piece inspired by Alexander Ostrowski's latest designs, painted in Procreate on an infernal palette of indigo, burnt amber and crimson. Themberchaud, furious over a hoard of gold and grudges. A free take on the D&amp;D dragon.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item">Procreate</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.dndfan">D&amp;D Fan Art</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2025</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <a class="illus-meta-item illus-meta-link" href="https://www.alexanderostrowski.com/" target="_blank" rel="noopener noreferrer">Ref. Alexander Ostrowski</a>
+        </div>
+        <ul class="social-media-icons illus-ig-link" aria-label="View on Instagram">
+         <li><a class="instagram" href="https://www.instagram.com/p/DYXZ_raRHxb/" target="_blank" rel="noopener noreferrer" aria-label="View The Fat Dragon on Instagram"> <span></span><span></span><span></span><span></span> 
+           <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+            <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+           </svg> </a></li>
+        </ul>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="0">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="2"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 2 — Andean Fairy / Hada de los Andes -->
+      <div class="illus-section" data-idx="2">
+       <div class="illus-card">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.andeanfairy.title">Andean Fairy — What If Fairies Were Born in the Andes?</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.digital">DIGITAL</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.andeanfairy.body">What if the mythical creatures of medieval European fantasy had been born in the Andes instead? A dark-skinned fairy with white hair, owl-butterfly wings, aguayo textiles and a golden tumi in hand. Part of a series reimagining European folklore with Latin American roots. Procreate, amber palette.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item">Procreate</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.latamfantasy">Latin American Fantasy</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="1">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="3"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 3 — Meninas de Canido -->
+      <div class="illus-section" data-idx="3">
+       <div class="illus-card illus-card--right">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>Sep — 2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.meninas.title">Flawless Victory — Meninas de Canido 2024</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.digital">DIGITAL</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.meninas.body">Official proposal for the Meninas de Canido street art festival in Ferrol, Galicia. Velázquez's Las Meninas reimagined as a tarot major arcana: a baroque border collie (a nod to "Canido") over a hypnotic cosmic spiral, flanked by golden Galician architecture that represents the revival of the Canido neighbourhood in Ferrol. Inspired by tarot cards, the creation process was meticulous; you can follow how the concept developed in the accompanying images. The piece was featured in the newspaper La Voz de Galicia.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item">Procreate</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.proposal">Official Proposal</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <a class="illus-meta-item illus-meta-link" href="https://www.lavozdegalicia.es/noticia/ferrol/ferrol/2024/09/07/artistas-esbozan-meninas-canido-barrio-tomado-arte-musica/0003_202409F7C6991.htm" target="_blank" rel="noopener noreferrer">La Voz de Galicia</a>
+        </div>
+        <ul class="social-media-icons illus-ig-link" aria-label="View on Instagram">
+         <li><a class="instagram" href="https://www.instagram.com/p/C_rF1ZhtWCc/" target="_blank" rel="noopener noreferrer" aria-label="View Flawless Victory on Instagram"> <span></span><span></span><span></span><span></span> 
+           <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+            <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+           </svg> </a></li>
+        </ul>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="2">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="4"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 4 — Rocker Ghost Geisha -->
+      <div class="illus-section" data-idx="4">
+       <div class="illus-card">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>Mar — 2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.geisha.title">Rocker Ghost Geisha — When a Japanese Yūrei Picks Up a Les Paul</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.digital">DIGITAL</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.geisha.body">A Japanese yūrei geisha, lover and master of rock and roll, plays her Les Paul before a red rising sun. A purple-and-gold kimono, a Noh-mask face and a hair ornament. My source of inspiration was ukiyo-e woodblock printing, which I tried to give a rock twist. Procreate.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item">Procreate</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.jpfantasy">Japanese Fantasy</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span>
+        </div>
+        <ul class="social-media-icons illus-ig-link" aria-label="View on Instagram">
+         <li><a class="instagram" href="https://www.instagram.com/p/C4itPswOull/" target="_blank" rel="noopener noreferrer" aria-label="View Rocker Ghost Geisha on Instagram"> <span></span><span></span><span></span><span></span> 
+           <svg class="social-icon" viewBox="0 0 448 512" aria-hidden="true">
+            <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+           </svg> </a></li>
+        </ul>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="3">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="5"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 6 — Mujer Crustáceo -->
+      <div class="illus-section" data-idx="5">
+       <div class="illus-card illus-card--right">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2014</div>
+        <h3 class="illus-piece-title" data-i18n="illus.mujer.title">Mujer Crustáceo — A Surrealist Study in Transformation</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.watercolorInk">WATERCOLOUR · INK</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.mujer.body">A personal, surrealist exploration of transformation, a study of metamorphosis. Watercolour and ink on paper.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.watercolorInk">Watercolour &amp; Ink</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.surrealism">Surrealism</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2014</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="4">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="6"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 7 — Reconciliación -->
+      <div class="illus-section" data-idx="6">
+       <div class="illus-card">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>May — 2014</div>
+        <h3 class="illus-piece-title" data-i18n="illus.reconciliacion.title">Reconciliación — Between the Living and the Lost</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.watercolorMixed">WATERCOLOUR · MIXED MEDIA</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.reconciliacion.body">A pink-haired woman and a male figure revealing part of his skull hold each other's gaze: life and death, love and loss, the fragile and the fearsome. Chrysanthemums, ink splashes and geometric shapes frame the emotional core. It was my response to the theme "Reconcili-ARTE" of the IV Faber-Castell National Drawing Contest: it won second place and was exhibited at the Museo de Arte Contemporáneo de Bogotá, 2014. Watercolour and digital finishing.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.secondPlace">2nd Place · Faber-Castell</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.watercolorDigital">Watercolour &amp; Digital</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2014</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="5">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="7"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 8 — Draconic Love -->
+      <div class="illus-section" data-idx="7">
+       <div class="illus-card illus-card--right">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2019</div>
+        <h3 class="illus-piece-title" data-i18n="illus.draconic.title">Draconic Love — Commercial Dragon Illustration</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.digitalCommercial">DIGITAL · COMMERCIAL</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.draconic.body">A blue dragon and a red dragon curl into a heart around bold hand-lettered typography that plays on words: instead of "platonic love", it reads "Draconic Love". A commercial illustration created for a merchandise line: applied to apparel and accessories such as t-shirts and tote bags, plus an extra set of dragons for the Etsy shop profile. Vibrant pastel palette, fantasy character design and expressive lettering. Illustrator.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item">Illustrator</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.merchDesign">Merchandise Design</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2019</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="6">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="8"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 9 — Colibrí -->
+      <div class="illus-section" data-idx="8">
+       <div class="illus-card">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.colibri.title">Colibrí Lisérgico — A Heartbeat in Full Color</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.mixed">MIXED MEDIA</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.colibri.body">An experimental illustration: a hummingbird crosses into the lysergic world and begins to transform, dissolving among waves of color until its outlines are gone. Deep in the trance, the only thing that holds is its heart, beating hard while everything around it turns to pure psychedelia. Watercolor and Posca marker.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.wcPosca">Watercolor · Posca Marker</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.personal">Personal Work</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="7">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="9"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 10 — The Illustration Muse -->
+      <div class="illus-section" data-idx="9">
+       <div class="illus-card illus-card--right">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.muse.title">Benzaiten — The Goddess of the Arts, Updated</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.mixed">MIXED MEDIA</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.muse.body">Benzaiten, the Japanese goddess of the arts, knowledge and everything that flows, brought into the present. With her six arms, before a copper-etched crimson sun, she holds the tools of my own craft: camera, guitar, brush and digital devices, offering a measure of her wisdom through each one. Another step in my exploration of Japanese art, painted as the cover for the illustration section of my old portfolio.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.wcGouacheCopper">Watercolor · Gouache · Copper Leaf</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.cover">Cover Artwork</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="8">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="10"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 11 — Photography cover -->
+      <div class="illus-section" data-idx="10">
+       <div class="illus-card">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.photocover.title">Photography — Portrait of My Fujifilm X-T4</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.mixed">MIXED MEDIA</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.photocover.body">An illustrated portrait of my personal camera: a Fujifilm X-T4 with a telephoto lens, in its leather half-case, a halo of energy bursting from the lens over a pink gouache ground and a golden glint on the telephoto lens. Painted as the cover for the photography section of my old portfolio.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.wcGouacheCopper">Watercolor · Gouache · Copper Leaf</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.cover">Cover Artwork</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="9">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="11"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 12 — Web Design cover -->
+      <div class="illus-section" data-idx="11">
+       <div class="illus-card illus-card--right">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2024</div>
+        <h3 class="illus-piece-title" data-i18n="illus.webcover.title">Web Design — A Digital Being in the Ocean of the Net</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.mixed">MIXED MEDIA</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.webcover.body">A white digital being navigates the ocean of the net, connected to it through its fingertips. Its head is a screen. It moves across the ocean of the web, rendered in red and pink tones. Painted as the cover for the web design work of my old portfolio.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.wcInkCopper">Watercolor · Ink · Copper Leaf</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.cover">Cover Artwork</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2024</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="10">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="12"><span data-i18n="illus.cta.next">Next</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <!-- 13 — Hugo & Molly (Quindiorellanas) -->
+      <div class="illus-section" data-idx="12">
+       <div class="illus-card">
+        <div class="illus-h-line"></div>
+        <div class="illus-tag glitch-text" data-splitting>2020</div>
+        <h3 class="illus-piece-title" data-i18n="illus.hugomolly.title">Hugo &amp; Molly — The Fungi Teachers of Quindiorellanas</h3>
+        <p class="illus-h2 illus-h2--category glitch-text" data-splitting data-i18n-split="illus.cat.digital">DIGITAL</p>
+        <p class="illus-body glitch-text" data-splitting data-i18n-split="illus.hugomolly.body">Hugo, a big wise mushroom, and Molly, a little mycelium who learns from his teachings. Mascot characters created for the children's workshops and illustrated recipe cards of Quindiorellanas, an oyster mushroom farm in Quindío, Colombia. Procreate.</p>
+        <div class="illus-meta-row">
+         <span class="illus-meta-item" data-i18n="illus.meta.chardesign">Character Design</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item" data-i18n="illus.meta.commission">Client Commission</span> <span class="illus-meta-sep" aria-hidden="true">·</span> <span class="illus-meta-item">© 2020</span>
+        </div>
+        <div class="illus-cta-row">
+         <button class="illus-cta-back" data-goto="11">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M11 6H1M6 11L1 6l5-5" />
+          </svg>
+          <span data-i18n="illus.cta.back">Back</span>
+         </button>
+         <button class="illus-cta" data-goto="0"><span data-i18n="illus.cta.again">Begin again</span>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+           <path d="M1 6h10M6 1l5 5-5 5" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+     </div>
+     <!-- /.illus-sections -->
+    </div>
+    <!-- /.illus-tunnel -->
+   </section>
+   <section id="contact" aria-labelledby="ct-name-heading">
+    <!-- ── Synthwave scene ───────────────────────────────────────── -->
+    <div class="ct-scene" aria-hidden="true">
+     <!-- Sky: stars + sun + scanlines + mountains (real divs for GSAP) -->
+     <div class="ct-sky">
+      <div id="ct-stars"></div>
+      <div class="ct-skylines"></div>
+      <div class="ct-horizon-glow"></div>
+      <div class="ct-mountains--far"></div>
+      <div class="ct-mountains--mid"></div>
+      <div class="ct-mountains--near"></div>
+      <div class="ct-sun"></div>
+     </div>
+     <!-- Ground: perspective grid via ::before, vignette via ::after -->
+     <div class="ct-ground"></div>
+     <!-- Ship cockpit frame (inline SVG injected by contact.js;
+                     transparent windshield reveals the synthwave scene) -->
+     <div class="ct-cockpit" aria-hidden="true"></div>
+     <!-- Pilot's hands on the controls (inline SVGs injected by
+                     contact.js; parked off-screen, slide in to point at the
+                     dashboard while form / social links are hovered) -->
+     <div class="ct-hand" aria-hidden="true"></div>
+     <div class="ct-hand ct-hand--right" aria-hidden="true"></div>
+     <!-- VHS / CRT overlay stack (same as intro section) -->
+     <div class="ct-grain"></div>
+     <div class="scanlines"></div>
+     <div class="vhs-static"></div>
+    </div>
+    <!-- /.ct-scene -->
+    <!-- ── Contact content (sky layer, z:50) ───── -->
+    <div class="ct-content">
+     <!-- Comms-console contact form. Transport: POST to the Cloudflare
+                     Pages Function /api/contact (Turnstile-verified, relayed to
+                     the site inbox via Resend). See functions/api/contact.js. -->
+     <div class="ct-form-row">
+      <!-- Stacked rotated title — letters split + staggered in
+                         by contact.js (GSAP); button replays the animation -->
+      <div class="ct-title">
+       <h2 class="ct-stack" id="ct-name-heading" aria-label="Nikolay — Let's get in touch"><span class="ct-stack-line">Nikolay</span> <span class="ct-stack-line">Greb</span> <span class="ct-stack-line ct-stack-line--tag">Let's get</span> <span class="ct-stack-line ct-stack-line--tag">in touch!</span></h2>
+      </div>
+      <!-- Vertical section banner, height-matched to the capsule -->
+      <img loading="lazy" decoding="async" class="ct-contact-bar" src="images/contact.svg" alt="" aria-hidden="true"> <!-- Column so the form and the social-links row below it
+                         share the exact same width -->
+      <div class="ct-form-col">
+       <form class="ct-form" id="ct-form" novalidate>
+        <div class="ct-form-head" aria-hidden="true">
+         <span class="ct-form-title glitch-text" data-splitting data-i18n-split="ct.form.title">// NEW_MESSAGE</span> <span class="ct-form-feed">BOGOTÁ ▸ WORLDWIDE<i class="ct-form-dot"></i></span>
+        </div>
+        <div class="ct-form-grid">
+         <div class="ct-field">
+          <label for="ct-f-name" class="glitch-text" data-splitting data-i18n-split="ct.form.name">[&gt;&gt;&gt;] NAME</label> <input id="ct-f-name" name="name" type="text" required autocomplete="name" spellcheck="false" maxlength="80" placeholder="_" aria-describedby="ct-f-name-err">
+          <p class="ct-field-err" id="ct-f-name-err"></p>
+         </div>
+         <div class="ct-field">
+          <label for="ct-f-email" class="glitch-text" data-splitting data-i18n-split="ct.form.email">[&gt;&gt;&gt;] EMAIL</label> <input id="ct-f-email" name="email" type="email" required autocomplete="email" spellcheck="false" maxlength="120" placeholder="_" aria-describedby="ct-f-email-err">
+          <p class="ct-field-err" id="ct-f-email-err"></p>
+         </div>
+         <div class="ct-field ct-field--msg">
+          <label for="ct-f-msg" class="glitch-text" data-splitting data-i18n-split="ct.form.message">[&gt;&gt;&gt;] MESSAGE</label> <textarea id="ct-f-msg" name="message" required maxlength="2000" placeholder="_" aria-describedby="ct-f-msg-err"></textarea>
+          <p class="ct-field-err" id="ct-f-msg-err"></p>
+         </div>
+        </div>
+        <!-- Turnstile widget mounts here (explicit render, contact.js).
+                         Empty until the Cloudflare script renders it — no visual
+                         footprint if the script is blocked/unavailable. -->
+        <div class="ct-turnstile" id="ct-turnstile"></div>
+        <div class="ct-form-foot">
+         <button type="submit" class="ct-send glitch-text" data-splitting data-i18n-split="ct.form.send" aria-label="Send message">[ ▸ s e n d ]</button>
+         <p class="ct-form-log"><span class="ct-log-text" aria-hidden="true">&gt; READY</span></p>
+         <!-- Shown by contact.js only if the backend send fails, so the
+                             visitor always has a direct way to reach the inbox. -->
+         <a class="ct-link ct-mail-fallback" id="ct-mail-fallback" href="#" data-eml hidden aria-label="Email Nikolay directly" data-i18n="ct.form.fallback">[ · w r i t e &nbsp; m e &nbsp; d i r e c t l y · ]</a>
+        </div>
+        <!-- Screen-reader status mirror (typed log is decorative) -->
+        <span class="ct-sr" role="status" id="ct-sr-status"></span> <!-- Honeypot — bots fill it, humans never see it -->
+        <input class="ct-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="ct-form-success" id="ct-form-success" hidden>
+         <p class="ct-success-title" tabindex="-1" data-i18n="ct.form.successTitle">✓ MESSAGE SENT</p>
+         <p class="ct-success-sub" data-i18n="ct.form.successSub">Thanks — I'll get back to you within 24h.</p>
+         <button type="button" class="ct-link ct-success-reset" aria-label="Send another message" data-i18n="ct.form.successReset">[ · s e n d &nbsp; a n o t h e r · ]</button>
+        </div>
+       </form>
+       <nav class="ct-links ct-links--mini" aria-label="Contact Nikolay directly">
+        <a href="https://wa.me/" class="ct-link" target="_blank" rel="noopener noreferrer me" aria-label="Message Nikolay on WhatsApp"> [ · w h a t s a p p · ] </a> <a href="https://www.instagram.com/" class="ct-link" target="_blank" rel="noopener noreferrer me" aria-label="Nikolay on Instagram"> [ · i n s t a g r a m · ] </a> <a href="https://www.linkedin.com/in/Nikolay-ai" class="ct-link" target="_blank" rel="noopener noreferrer me" aria-label="Nikolay on LinkedIn"> [ · l i n k e d i n · ] </a>
+       </nav>
+      </div>
+      <!-- /.ct-form-col -->
+      <!-- DNA capsule: line-art shell + DNA art fetch-injected
+                         inline by contact.js so it can be recolored to match -->
+      <div class="ct-capsule" aria-hidden="true">
+       <img loading="lazy" decoding="async" class="ct-capsule-shell" src="images/dnacapsule1.svg" alt="">
+       <div class="ct-capsule-dna"></div>
+      </div>
+     </div>
+     <!-- /.ct-form-row -->
+    </div>
+    <footer class="ct-footer">
+     <p data-i18n="footer.rights">© 2026 All rights reserved — Nikolay, Senior Art Director &amp; Photographer, Bogotá, Colombia</p>
+    </footer>
+   </section>
+  </main>
+
+  <div id="nik">
+   <a href="https://www.nik-greb.com/sites/Nikolay-art-director" target="_blank" rel="noopener noreferrer" aria-label="Nikolay — nominated (opens in a new tab)"> 
+    <svg width="53.08" height="171.358" viewBox="0 0 53.08 171.358" role="img" focusable="false">
+     <title>Nominee</title> <path class="js-color-bg" fill="#5ABDB2" d="M0 0h53.08v171.358H0z" />
+     <g class="js-color-text" fill="#fff">
+      <path d="M20.048 153.585v-2.002l6.752-3.757h-6.752v-1.9h10.23v2.002l-6.752 3.757h6.752v1.9zM29.899 142.382a3.317 3.317 0 0 1-1.359 1.293c-.575.297-1.223.446-1.944.446-.721 0-1.369-.149-1.944-.446a3.317 3.317 0 0 1-1.359-1.293c-.331-.564-.497-1.232-.497-2.003 0-.769.166-1.437.497-2.002a3.332 3.332 0 0 1 1.359-1.294c.575-.297 1.224-.445 1.944-.445.722 0 1.369.148 1.944.445a3.326 3.326 0 0 1 1.359 1.294c.33.565.496 1.233.496 2.002.001.77-.166 1.438-.496 2.003m-1.703-3.348c-.435-.331-.967-.497-1.601-.497s-1.167.166-1.601.497c-.434.332-.65.78-.65 1.345s.217 1.014.65 1.346c.434.33.967.496 1.601.496s1.166-.166 1.601-.496c.434-.332.649-.78.649-1.346.001-.565-.215-1.013-.649-1.345M22.912 134.996v-1.812h1.185c-.43-.283-.752-.593-.973-.929-.219-.336-.329-.732-.329-1.19 0-.479.127-.902.38-1.272.254-.37.635-.633 1.141-.79-.478-.262-.851-.591-1.118-.985a2.221 2.221 0 0 1-.402-1.265c0-.682.2-1.218.599-1.607.4-.391.957-.585 1.668-.585h5.218v1.812H25.37c-.682 0-1.023.303-1.023.907 0 .467.264.85.789 1.146.527.299 1.286.446 2.28.446h2.865v1.813H25.37c-.682 0-1.023.303-1.023.906 0 .468.275.851.826 1.147.551.298 1.352.446 2.404.446h2.704v1.812h-7.369zM21.626 122.457c-.225.224-.502.336-.833.336s-.608-.112-.833-.336a1.128 1.128 0 0 1-.336-.833c0-.331.111-.609.336-.833.225-.225.502-.336.833-.336s.608.111.833.336c.225.224.337.502.337.833 0 .332-.112.608-.337.833m1.286-1.739h7.366v1.813h-7.366v-1.813zM22.912 118.668v-1.812h1.185a3.348 3.348 0 0 1-.951-1.009 2.434 2.434 0 0 1-.351-1.272c0-.681.19-1.229.57-1.644.38-.414.931-.621 1.651-.621h5.263v1.812h-4.722c-.418 0-.727.096-.92.285-.195.19-.293.447-.293.769 0 .302.116.58.351.833.233.254.577.458 1.03.613.453.156.992.234 1.615.234h2.938v1.812h-7.366zM29.833 109.129a3.33 3.33 0 0 1-1.432 1.169 4.535 4.535 0 0 1-1.805.373 4.537 4.537 0 0 1-1.807-.373c-.579-.248-1.057-.638-1.432-1.169s-.563-1.196-.563-1.995c0-.771.183-1.413.549-1.93a3.28 3.28 0 0 1 1.382-1.141 4.221 4.221 0 0 1 1.709-.364h.746v5.071c.447-.02.838-.183 1.168-.49.332-.307.498-.724.498-1.248 0-.41-.093-.754-.277-1.031-.186-.278-.473-.529-.863-.753l.542-1.462c.69.303 1.224.724 1.592 1.265.371.541.556 1.235.556 2.083 0 .799-.188 1.464-.563 1.995m-4.085-3.574c-.41.088-.746.261-1.009.52-.262.258-.395.61-.395 1.06 0 .428.137.784.409 1.067.272.282.604.458.994.525v-3.172zM29.833 100.878c-.375.531-.852.921-1.432 1.169a4.552 4.552 0 0 1-3.612 0c-.579-.248-1.057-.638-1.432-1.169s-.563-1.196-.563-1.995c0-.77.183-1.412.549-1.93a3.278 3.278 0 0 1 1.382-1.14 4.222 4.222 0 0 1 1.709-.365h.746v5.072a1.794 1.794 0 0 0 1.168-.49c.332-.307.498-.724.498-1.249 0-.41-.093-.753-.277-1.031-.186-.277-.473-.528-.863-.753l.542-1.462c.69.302 1.224.724 1.592 1.265.371.541.556 1.234.556 2.083 0 .799-.188 1.464-.563 1.995m-4.085-3.573c-.41.088-.746.261-1.009.519-.262.258-.395.611-.395 1.06 0 .429.137.784.409 1.067.272.282.604.458.994.526v-3.172zM35.481 16.926l-4.782 14.969h-3.266l-2.584-9.682-2.584 9.682h-3.268l-4.781-14.969h3.713l2.673 10.276 2.524-10.276h3.445l2.524 10.276 2.674-10.276zM37.979 27.083c1.426 0 2.495 1.068 2.495 2.495 0 1.425-1.069 2.495-2.495 2.495-1.425 0-2.495-1.07-2.495-2.495-.001-1.427 1.07-2.495 2.495-2.495" />
+     </g>
+    </svg> 
+   </a>
+  </div>
+  <div id="photo-scroll-hint" aria-hidden="true">
+   <div class="sc-panel">
+    <svg class="sc-icon" viewBox="0 0 36 62" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+     <rect x="8" y="1" width="20" height="34" rx="10" stroke="currentColor" stroke-width="1.5" /> <line x1="18" y1="2" x2="18" y2="18" stroke="currentColor" stroke-width="0.75" opacity="0.45" /> <rect class="sc-wheel" x="15.5" y="7" width="5" height="9" rx="2.5" fill="currentColor" /> <polyline class="sc-chevron-1" points="11,42 18,50 25,42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /> <polyline class="sc-chevron-2" points="11,51 18,59 25,51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <p class="sc-text">[ · s c r o l l · ]</p>
+   </div>
+  </div>
+  <div id="line-collision-star">
+   <span></span> <span></span> <span></span> <span></span> <span></span>
+  </div>
+  <!-- App registry — must be first; all modules write/read App.* -->
+  <!-- defer on all scripts: parallel downloads, preserved execution order, unblocks rendering -->
+  <!-- model-viewer (vendored, ~1MB) is lazy-loaded by art-direction-panel.js
+         on first 3D selection — do NOT load it here: the Draco decoder location
+         (js/lib/draco/) must be configured before the module evaluates, or it
+         locks to Google's CDN which CSP blocks and models never load. -->
+  <!-- Leader line overlay — vintage Snake-game connector from info-card line to its bracket -->
+  <svg id="inf-leader" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" focusable="false">
+   <path id="inf-leader-track" /> <path id="inf-leader-snake" /> <!-- Pixel head — centred on (0,0), faces +x; JS rides it along the route -->
+   <g id="inf-leader-head" shape-rendering="crispEdges">
+    <rect x="-5" y="-4" width="9" height="8" fill="#EE9B00" /> <rect x="4" y="-3" width="2" height="2" fill="#EE9B00" /> <rect x="4" y="1" width="2" height="2" fill="#EE9B00" /> <rect x="0" y="-3" width="2" height="2" fill="#001219" /> <rect x="0" y="1" width="2" height="2" fill="#001219" />
+   </g>
+  </svg>
+  <!-- Info bracket overlay — contextual { indicator for info-interface hotspots -->
+  <div id="inf-bracket" aria-hidden="true">
+   <svg id="inf-bracket-svg" xmlns="http://www.w3.org/2000/svg" fill="none" overflow="visible">
+    <path id="inf-bracket-path" stroke-linecap="round" stroke-linejoin="round" /> <polyline id="inf-bracket-chev1" class="inf-bracket-chevron" stroke-linecap="round" stroke-linejoin="round" fill="none" /> <polyline id="inf-bracket-chev2" class="inf-bracket-chevron inf-bracket-chevron--2" stroke-linecap="round" stroke-linejoin="round" fill="none" /> <text id="inf-bracket-label" font-family="'Funnel Display', sans-serif" font-size="20" text-anchor="middle"> <tspan class="ibl" style="--li:0;--lo:0.40" font-weight="normal">·</tspan><tspan class="ibl" style="--li:1;--lo:0.85" font-weight="bold">h</tspan><tspan class="ibl" style="--li:2;--lo:0.85" font-weight="bold">e</tspan><tspan class="ibl" style="--li:3;--lo:0.85" font-weight="bold">r</tspan><tspan class="ibl" style="--li:4;--lo:0.85" font-weight="bold">e</tspan><tspan class="ibl" style="--li:5;--lo:0.40" font-weight="normal">·</tspan> </text>
+   </svg>
+  </div>
+  <!-- Illustration snake-leader overlay — amber; points from each how-to row to its control -->
+  <svg id="illus-snake" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" focusable="false">
+   <path id="illus-snake-track" /> <path id="illus-snake-body" />
+   <g id="illus-snake-head" shape-rendering="crispEdges">
+    <rect x="-5" y="-4" width="9" height="8" fill="#EE9B00" /> <rect x="4" y="-3" width="2" height="2" fill="#EE9B00" /> <rect x="4" y="1" width="2" height="2" fill="#EE9B00" /> <rect x="0" y="-3" width="2" height="2" fill="#001219" /> <rect x="0" y="1" width="2" height="2" fill="#001219" />
+   </g>
+  </svg>
+  
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;82a0cc80c2b441eeb793ce1b251a0db7&quot;,&quot;r&quot;:1}" crossorigin="anonymous"></script>
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2fbbcbca905da09',t:'MTc4NzUwNTA5NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ </body>
+</html>

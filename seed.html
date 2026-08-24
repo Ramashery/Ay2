@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firestore Seed | nik-greb.com</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000; --panel:rgba(17,17,17,.75); --border:rgba(0,255,255,.25);
+    --cyan:#00ffff; --text:#fff; --muted:rgba(255,255,255,.6);
+    --ok:#5eead4; --err:#ff6b6b; --warn:#ffb020;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Funnel Display',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;padding:24px 16px 60px}
+  .wrap{max-width:720px;margin:0 auto}
+  h1{font-size:1.4rem;margin:0 0 4px;letter-spacing:.02em}
+  h1 span{color:var(--cyan)}
+  p.lead{color:var(--muted);margin:0 0 28px;line-height:1.5;font-size:.95rem}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+  .card h2{margin:0 0 10px;font-size:1rem;color:var(--cyan);font-weight:600}
+  .summary-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.08);font-size:.92rem}
+  .summary-row:last-child{border-bottom:none}
+  .summary-row b{color:var(--text)}
+  .summary-row span{color:var(--muted)}
+  button{width:100%;padding:16px;font-size:1rem;font-family:inherit;font-weight:600;border-radius:8px;border:1px solid var(--cyan);background:rgba(0,255,255,.08);color:var(--cyan);cursor:pointer;transition:.2s;letter-spacing:.02em}
+  button:hover:not(:disabled){background:rgba(0,255,255,.18)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  button.danger{border-color:var(--err);color:var(--err);background:rgba(255,107,107,.08)}
+  button.danger:hover:not(:disabled){background:rgba(255,107,107,.15)}
+  #log{font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.6;background:#050505;border:1px solid var(--border);border-radius:8px;padding:14px;height:260px;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+  #log .ok{color:var(--ok)}
+  #log .err{color:var(--err)}
+  #log .warn{color:var(--warn)}
+  #log .dim{color:var(--muted)}
+  .status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;border:1px solid var(--border);color:var(--muted);margin-left:8px}
+  .status-pill.done{color:var(--ok);border-color:var(--ok)}
+  .progress-track{height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:14px}
+  .progress-fill{height:100%;width:0%;background:var(--cyan);transition:width .25s}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span>[Firestore]</span> Database Seed</h1>
+  <p class="lead">Эта страница один раз заполняет базу Firestore проекта <b>ayge-722bd</b> контентом, извлечённым из index.html/main.js. Запись идёт по детерминированным ID документов (upsert), поэтому повторный запуск безопасен и просто перезапишет те же документы актуальными данными — дублей не будет.</p>
+
+  <div class="card">
+    <h2>Что будет записано</h2>
+    <div class="summary-row"><b>artDirectionProjects</b><span id="count-art">— шт.</span></div>
+    <div class="summary-row"><b>photoGallery</b><span id="count-photo">— шт.</span></div>
+    <div class="summary-row"><b>config/site</b><span>1 документ</span></div>
+    <div class="summary-row"><b>config/artDirectionExtra</b><span>1 документ</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Статус подключения <span id="conn-pill" class="status-pill">проверка...</span></h2>
+    <button id="seed-btn" disabled>Запустить посев в Firestore</button>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="card">
+    <h2>Журнал</h2>
+    <div id="log"><span class="dim">Ожидание запуска…</span></div>
+  </div>
+</div>
+
+<!-- Firebase (compat build, same version used by admin.js) -->
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+<script src="seed-data.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDzqV4NoS61WrIUd7nDoLEXrExpjz2Auvg",
+  authDomain: "ayge-722bd.firebaseapp.com",
+  projectId: "ayge-722bd",
+  storageBucket: "ayge-722bd.firebasestorage.app",
+  messagingSenderId: "623907416178",
+  appId: "1:623907416178:web:da7103ea0eea2b210c7aeb",
+  measurementId: "G-MM7B72315G"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const logEl = document.getElementById('log');
+const btn = document.getElementById('seed-btn');
+const pill = document.getElementById('conn-pill');
+const fill = document.getElementById('progress-fill');
+
+function log(msg, cls) {
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  if (logEl.querySelector('.dim') && logEl.children.length === 1) logEl.innerHTML = '';
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+document.getElementById('count-art').textContent = SEED_ART_DIRECTION.length + ' шт.';
+document.getElementById('count-photo').textContent = SEED_PHOTO_GALLERY.length + ' шт.';
+
+// Quick connectivity check (doesn't require auth — Firestore rules just need
+// to allow this specific test read, or it will simply fail gracefully).
+db.collection('config').doc('site').get()
+  .then(() => { pill.textContent = 'подключено'; pill.classList.add('done'); btn.disabled = false; })
+  .catch((e) => {
+    pill.textContent = 'нет доступа на чтение (это нормально, если правила закрыты)';
+    log('Проверка подключения: ' + e.message, 'warn');
+    btn.disabled = false; // writes might still be allowed even if reads aren't
+  });
+
+async function seed() {
+  btn.disabled = true;
+  let total = SEED_ART_DIRECTION.length + SEED_PHOTO_GALLERY.length + 2;
+  let done = 0;
+  const tick = () => { done++; fill.style.width = Math.round((done/total)*100) + '%'; };
+
+  try {
+    log('Начинаю посев…', 'dim');
+
+    // Firestore batches are capped at 500 operations — we're well under that,
+    // but the code is written so you can raise the dataset size later without
+    // hitting the limit silently.
+    const chunks = [];
+    const allOps = [];
+
+    SEED_ART_DIRECTION.forEach(item => {
+      const { id, ...data } = item;
+      allOps.push(['artDirectionProjects', id, data]);
+    });
+    SEED_PHOTO_GALLERY.forEach(item => {
+      const { id, ...data } = item;
+      allOps.push(['photoGallery', id, data]);
+    });
+    allOps.push(['config', 'site', SEED_SITE_CONFIG]);
+    allOps.push(['config', 'artDirectionExtra', SEED_ART_DIRECTION_EXTRA]);
+
+    for (let i = 0; i < allOps.length; i += 450) {
+      chunks.push(allOps.slice(i, i + 450));
+    }
+
+    for (const chunk of chunks) {
+      const batch = db.batch();
+      chunk.forEach(([col, id, data]) => {
+        batch.set(db.collection(col).doc(id), data, { merge: false });
+      });
+      await batch.commit();
+      chunk.forEach(([col, id]) => { log(`✓ ${col}/${id}`, 'ok'); tick(); });
+    }
+
+    log('', 'dim');
+    log(`Готово: ${SEED_ART_DIRECTION.length} проектов Art Direction, ${SEED_PHOTO_GALLERY.length} фото, 2 конфигурационных документа.`, 'ok');
+    log('Можно открывать admin.html для дальнейшего редактирования.', 'dim');
+  } catch (err) {
+    console.error(err);
+    log('Ошибка: ' + err.message, 'err');
+    log('Проверьте Firestore Security Rules — запись должна быть разрешена (временно можно разрешить всем, затем закрыть).', 'warn');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+btn.addEventListener('click', () => {
+  if (confirm('Записать/перезаписать контент сайта в Firestore проекта ayge-722bd?')) seed();
+});
+</script>
+</body>
+</html>
